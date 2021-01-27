@@ -1,4 +1,5 @@
 from api_wrappers import ApiWrapperMixin
+from math import radians
 
 class ActuatorMixin(ApiWrapperMixin):
     def __init__(self, api_url, api_uri):
@@ -20,6 +21,14 @@ class Head(ActuatorMixin):
     All position getters are in degrees.
 
     """
+
+    pitch_lower_bound = -40
+    pitch_upper_bound = 26 
+    roll_lower_bound = -40 
+    roll_upper_bound = 40
+    yaw_lower_bound = -81
+    yaw_upper_bound = 81
+
     def __init__(self, api_url, api_uri):
         self.api_url = api_url
         self.api_uri = api_uri
@@ -86,33 +95,33 @@ class Head(ActuatorMixin):
                              + ' Possible values are "degrees", "radians",'
                              + ' and "position".')
         if units == 'degrees':
-            if not -40 < pitch < 26:
+            if not self.pitch_lower_bound <= pitch <= self.pitch_upper_bound:
                 raise ValueError(f'Invalid argument for pitch {pitch}'
                                  + 'with degree units')
-            if not -40 < roll < 40:
+            if not self.roll_lower_bound <= roll <= self.roll_upper_bound:
                 raise ValueError(f'Invalid argument for roll {roll}'
                                  + 'with degree units')
-            if not -81 < yaw < 81:
+            if not self.yaw_lower_bound <= yaw <= self.yaw_upper_bound:
                 raise ValueError(f'Invalid argument for yaw {yaw}'
                                  + 'with degree units')
         elif units == 'radians':
-            if not -0.1662 < pitch < 0.6094:
+            if not radians(self.pitch_lower_bound) <= pitch <= radians(self.pitch_upper_bound):
                 raise ValueError(f'Invalid argument for pitch {pitch}'
                                  + 'with radian units')
-            if not -0.75 < roll < 0.75:
+            if not radians(self.roll_lower_bound) <= roll <= radians(self.roll_upper_bound):
                 raise ValueError(f'Invalid argument for roll {roll}'
                                  + 'with radian units')
-            if not -1.57 < yaw < 1.57:
+            if not radians(self.yaw_lower_bound) <= yaw <= radians(self.yaw_upper_bound):
                 raise ValueError(f'Invalid argument for yaw {yaw}'
                                  + 'with radian units')
         else:
-            if not -5 < pitch < 5:
+            if not -5 <= pitch <= 5:
                 raise ValueError(f'Invalid argument for pitch {pitch}'
                                  + 'with radian units')
-            if not -5 < roll < 5: 
+            if not -5 <= roll <= 5: 
                 raise ValueError(f'Invalid argument for roll {roll}'
                                  + 'with radian units')
-            if not -5 < yaw < 5:
+            if not -5 <= yaw <= 5:
                 raise ValueError(f'Invalid argument for yaw {yaw}'
                                  + 'with radian units')
 
@@ -132,6 +141,10 @@ class Arm(ActuatorMixin):
 
     Position value getters are in degrees.
     """
+
+    position_lower_bound = -29
+    position_upper_bound = 90
+
     def __init__(self, which_arm: str, api_url, api_uri):
         if not which_arm in ('left', 'right'):
             raise ValueError(f'Invalid value for which_arm {which_arm}')
@@ -146,10 +159,6 @@ class Arm(ActuatorMixin):
             return self.position_getter('leftArm', 'Actuator_LeftArm')
         elif self.which_arm == 'right':
             return self.position_getter('rightArm', 'Actuator_RightArm')
-        # else: # both arms
-        #     left_pos = self.position_getter('leftArm', 'Actuator_LeftArm')
-        #     right_pos =  self.position_getter('rightArm', 'Actuator_RightArm')
-        #     return {'left': left_pos, 'right': right_pos}
 
     @position.setter
     def position(self, new_pos):
@@ -176,10 +185,10 @@ class Arm(ActuatorMixin):
 
         valid_position = True
         if units == 'degrees':
-            if not -29 <= position <= 90:
+            if not self.position_lower_bound <= position <= self.position_upper_bound:
                 valid_position = False
         elif units == 'radians':
-            if not -0.50614 <= position <= 1.570796:
+            if not radians(self.position_lower_bound) <= position <= radians(self.position_upper_bound):
                 valid_position = False
         else:
             if not -5 <= position <= 5:
