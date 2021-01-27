@@ -1,6 +1,7 @@
 from api_wrappers import ApiWrapperMixin
 from asset import AssetMixin
 from system import SystemMixin
+from movement import Head, BothArms
 from typing import List
 from io import BytesIO
 import gtts
@@ -14,6 +15,8 @@ class Robot(SystemMixin, AssetMixin, ApiWrapperMixin):
         self.ip = ip
         self.api_url = 'http://' + ip + '/api/'
         self.api_uri = 'ws://' + ip + '/pubsub'
+        self.head = Head(self.api_url, self.api_uri)
+        self.arms = BothArms(self.api_url, self.api_uri)
 
         self.websockets = {}
 
