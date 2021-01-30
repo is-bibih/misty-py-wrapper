@@ -305,6 +305,52 @@ class DrivingMixin(ApiWrapperMixin):
                   'AngularVelocity': angular_velocity}
         self.wrapper_post(endpoint, params)
 
+    def drive_arc(self, heading: float, radius: float,
+                  time_ms: float, reverse: bool = False):
+        """Drive Misty in an arc until provided heading is reached.
+
+            Parameters:
+                heading (float): absolute heading Misty should reach when the arc is complete (Misty's current heading is the value for yaw from the IMU named object), between -180 and 360 degrees
+                radius (float): radius in meters for the arc
+                time_ms (float): duration in milliseconds for Misty's movement
+                reverse (bool, default False): if True, Misty drives in reverse
+        """
+        if not -180 <= heading <= 360:
+            raise ValueError(f'Invalid value for heading {heading}')
+
+        endpoint = 'drive/arc'
+        params = {
+            'Heading': heading,
+            'Radius': radius,
+            'TimeMs': time_ms,
+            'Reverse': reverse,
+        }
+        self.wrapper_post(endpoint, params)
+
+    def drive_heading(self, heading: float, distance: float,
+                time_ms: float, reverse: bool = False):
+        """Drive Misty to maintain desired heading.
+
+        Misty's current heading should be within two degrees of the desired absolute heading in order to avoid large correction velocities. Use drive_arc to adjust heading if necessary.
+
+            Parameters
+                heading (float): absolute heading to maintain, between -180 and 360 degrees
+                distance (float): distance in meters Misty should drive
+                time_ms (float): duration in milliseconds that Misty's movement should last
+                reverse (bool, default False): if True, Misty drives in reverse
+        """
+        if not -180 <= heading <= 360:
+            raise ValueError(f'Invalid value for heading {heading}')
+
+        endpoint = 'drive/hdt'
+        params = {
+            'Heading': heading,
+            'Distance': distance,
+            'TimeMs': time_ms,
+            'Reverse': reverse,
+        }
+        self.wrapper_post(endpoint, params)
+
     def stop(self, hold: bool = False):
         """Stop Misty's movement.
 
