@@ -2,10 +2,8 @@ from api_wrappers import ApiWrapperMixin
 from math import radians
 
 class ActuatorMixin(ApiWrapperMixin):
-    def __init__(self, api_url, api_uri):
-        self.api_url = api_url
-        self.api_uri = api_uri
-        self.websockets = {}
+    def __init__(self, ip):
+        super().__init__(ip)
 
     def position_getter(self, event_name, sensor_name):
         self.add_websocket('ActuatorPosition', event_name,
@@ -29,11 +27,8 @@ class Head(ActuatorMixin):
     yaw_lower_bound = -81
     yaw_upper_bound = 81
 
-    def __init__(self, api_url, api_uri):
-        self.api_url = api_url
-        self.api_uri = api_uri
-
-        self.websockets = {}
+    def __init__(self, ip):
+        super().__init__(ip)
 
     @property
     def pitch(self):
@@ -145,13 +140,11 @@ class Arm(ActuatorMixin):
     position_lower_bound = -29
     position_upper_bound = 90
 
-    def __init__(self, which_arm: str, api_url, api_uri):
+    def __init__(self, which_arm: str, ip: str):
         if not which_arm in ('left', 'right'):
             raise ValueError(f'Invalid value for which_arm {which_arm}')
+        super().__init__(ip)
         self.which_arm = which_arm
-        self.api_url = api_url
-        self.api_uri = api_uri
-        self.websockets = {}
 
     @property
     def position(self):
@@ -211,11 +204,10 @@ class BothArms(ApiWrapperMixin):
     All position getters are in degrees.
 
     """
-    def __init__(self, api_url, api_uri):
-        self.api_url = api_url
-        self.api_uri = api_uri
-        self.left = Arm('left', api_url, api_uri)
-        self.right = Arm('right', api_url, api_uri)
+    def __init__(self, ip):
+        super().__init__(ip)
+        self.left = Arm('left', ip)
+        self.right = Arm('right', ip)
 
     @property
     def position(self):
@@ -287,4 +279,40 @@ class BothArms(ApiWrapperMixin):
             'Units': units,
         }
         self.wrapper_post(endpoint, params)
+
+
+class DrivingMixin(ApiWrapperMixin):
+    """Provide an interface to Misty's driving functions.
+    
+    """
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def drive(self, linear_velocity: float, angular_velocity: float):
+        """Drive Misty at specified linar and angular velocity until cancelled.
+
+            Parameters
+                linear_velocity (float): percent value for linear velocity; between -100 (full speed backward) and 100 (full speed forward)
+                angular_velocity (float): percent value for angular velocity; between -100 (full speed rotation clockwise) and 100 (full speed rotation counter-clockwise)
+        """
+        if not -100 <= linear_velocity <= 100:
+            raise ValueError(f'Invalid value for linear velocity {linear_velocity}')
+        if not -100 <= angular_velocity <= 100:
+            raise ValueError(f'Invalid value for angular velocity {angular_velocity}')
+
+        endpoint = 'drive'
+        params = {'LinearVelocity': linear_velocity,
+                  'AngularVelocity': angular_velocity}
+        self.wrapper_post(endpoint, params)
+
+    def stop(self, hold: bool = False):
+        """Stop Misty's movement.
+
+            Parameters
+                hold (bool, default False): if true, Misty's drive motors remain engaged and attempt to hold the robot in its current position (useful on inclines); should be avoided in most cases
+        """
+        endpoint = 'drive/stop'
+        params = {'Hold': hold}
+        self.wrapper_post(endpoint, params)
+
 

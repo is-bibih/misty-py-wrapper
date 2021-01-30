@@ -1,24 +1,20 @@
 from api_wrappers import ApiWrapperMixin
 from asset import AssetMixin
 from system import SystemMixin
-from movement import Head, BothArms
+from movement import Head, BothArms, DrivingMixin
 from typing import List
 from io import BytesIO
 import gtts
 
-class Robot(SystemMixin, AssetMixin, ApiWrapperMixin):
+class Robot(DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMixin):
     """Provide an interface to the Misty API and text-to-speech.
 
     """
     def __init__(self, ip: str):
         """Initialize Robot instance."""
-        self.ip = ip
-        self.api_url = 'http://' + ip + '/api/'
-        self.api_uri = 'ws://' + ip + '/pubsub'
-        self.head = Head(self.api_url, self.api_uri)
-        self.arms = BothArms(self.api_url, self.api_uri)
-
-        self.websockets = {}
+        super().__init__(ip)
+        self.head = Head(ip)
+        self.arms = BothArms(ip)
 
     def add_touch_sensor(self, event_name,
                          sensor_position: List[str] = None, **kwargs):

@@ -11,9 +11,10 @@ Value = str
 Conditions = TypeVar('Conditions', Iterable[Tuple[Property, Inequality, Value]], None)
 
 class ApiWrapperMixin:
-    def __init__(self, api_url, api_uri):
-        self.api_url = api_url
-        self.api_uri = api_uri
+    def __init__(self, ip):
+        self.ip = ip
+        self.api_url = 'http://' + ip + '/api/'
+        self.api_uri = 'ws://' + ip + '/pubsub'
         self.websockets = {}
 
     def add_websocket(

@@ -3,6 +3,9 @@ import base64
 import json
 
 class AssetMixin(ApiWrapperMixin):
+    def __init__(self, ip):
+        super().__init__(ip)
+
     def get_audio_list(self):
         """Get list of Misty's saved audio files."""
         endpoint = 'audio/list'
