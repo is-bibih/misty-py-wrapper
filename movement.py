@@ -351,6 +351,55 @@ class DrivingMixin(ApiWrapperMixin):
         }
         self.wrapper_post(endpoint, params)
 
+    def drive_time(self, linear_velocity: float, angular_velocity: float,
+                   time_ms: int, degree: float = None):
+        """Drive Misty forward or backward at given linear and angular speed for a certain amount of time.
+
+            Parameters
+                linear_velocity (float): percent that sets speed for driving in a straight line (100 is full speed forward, -100 is full speed backward)
+                angular_velocity (float): percent that sets speed and direction for rotation (-100 is full speed rotation clockwise, -100 is full speed rotation counter-clockwise)
+                time_ms (int): duration for movement in milliseconds, must be larger than 100 or Misty will not move
+                degree (float, default None): amount of degrees to turn (this recalculates linear velocity)
+        """
+        for param, param_name in zip(
+                (linear_velocity, angular_velocity),
+                ('linear_velocity', 'angular_velocity')):
+            if not -100 <= param <= 100:
+                raise ValueError(f'Invalid value for {param_name} {param}')
+        if time_ms < 100:
+            raise ValueError(f'Misty will not move with time_ms {time_ms}')
+
+        endpoint = 'drive/time'
+        params = {
+            'LinearVelocity': linear_velocity,
+            'AngularVelocity': angular_velocity,
+            'TimeMs': time_ms,
+            'Degree': degree
+        }
+        self.wrapper_post(endpoint, params)
+
+    def drive_track(self, left_speed: float, right_speed: float):
+        """[Not functional] Drive Misty with speeds given for each track.
+
+            Parameters
+                left_speed (float): speed for the left track, between -100 (full speed backwards) and 100 (full speed forwards)
+                right_speed (float): speed for the right track, between -100 (full speed backwards) and 100 (full speed forwards)
+        """
+        if not -100 <= left_speed <= 100:
+            raise ValueError(f'Invalid value for left_speed {left_speed}')
+        if not -100 <= right_speed <= 100:
+            raise ValueError(f'Invalid value for right_speed {left_speed}')
+
+        endpoint = 'drive/track'
+        params = {'LeftTrackSpeed': left_speed, 'RightTrackSpeed': right_speed}
+        self.wrapper_post(endpoint, params)
+
+    def halt(self):
+        """Halt all motor controllers, including drive motor, head, neck, and arms/
+        """
+        endpoint = 'halt'
+        self.wrapper_post(endpoint)
+
     def stop(self, hold: bool = False):
         """Stop Misty's movement.
 
