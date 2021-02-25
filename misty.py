@@ -2,11 +2,12 @@ from api_wrappers import ApiWrapperMixin
 from asset import AssetMixin
 from system import SystemMixin
 from movement import Head, BothArms, DrivingMixin
+from navigation import MappingMixin
 from typing import List
 from io import BytesIO
 import gtts
 
-class Robot(DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMixin):
+class Robot(MappingMixin, DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMixin):
     """Provide an interface to the Misty API and text-to-speech.
 
     """
