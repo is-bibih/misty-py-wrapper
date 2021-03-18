@@ -24,17 +24,27 @@ class ApiWrapperMixin:
         debounce: int = 250,
         return_property: str = None,
         conditions: Conditions = None):
-        """Add new WebSocketStream instance to list of websocket connections.
+        r"""Add new WebSocketStream instance to list of websocket connections.
 
-            Parameters:
-                event_type (str): Misty event type (see API documentation)
-                event_name (str): Unique identifier for connection
-                debounce (int): How frequently (in ms) new event data should be sent
-                return_property (str, default None): Property to restrict received events to (supports dot notation; e. g. "MentalState.Affect.Valence"); no restrictions if None
-                conditions (iterable of tuples, default None): Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None
-                    Property (str): Event property to check (see API documentation)
-                    Inequality (str): Comparison operator; can be '=>', '==', '!=','>', '<', 'exists', 'empty', or 'delta'
-                    Value (str): Value to check against
+            Parameters
+            ----------
+            event_type: str
+                        Misty event type (see API documentation)  
+            event_name: str
+                        Unique identifier for connection  
+            debounce: int
+                      How frequently (in ms) new event data should be sent  
+            return_property: str, default None
+                             Property to restrict received events to (supports dot notation; e. g. "MentalState.Affect.Valence"); no restrictions if None  
+            conditions: iterable of tuples, default None
+                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None  
+
+                        Property: str  
+                            Event property to check (see API documentation)  
+                        Inequality: str  
+                            Comparison operator; can be '=>', '==', '!=','>', '<', 'exists', 'empty', or 'delta'  
+                        Value: str  
+                            Value to check against  
         """
         ws = WebSocketStream(
             self.api_uri,

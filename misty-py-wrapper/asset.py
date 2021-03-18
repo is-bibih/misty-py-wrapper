@@ -1,4 +1,4 @@
-from api_wrappers import ApiWrapperMixin
+from .api_wrappers import ApiWrapperMixin
 import base64
 import json
 
@@ -18,11 +18,17 @@ class AssetMixin(ApiWrapperMixin):
         """Saves either audio data string or audio file to Misty.
 
             Parameters
-                file_name (str): The name Misty should use to save the file
-                data (str, default None): Base 64 audio data passed as a string (either data or file must be passed, not both)
-                file (file-like object, default None): Audio file; valid types are .wav, .mp3, .wma and .aac (either data or file must be passed, not both)
-                immediately_apply (bool, default False): Indicates whether Misty should play the file immediately after saving it
-                overwrite_existing (bool, default False): Indicates whether the file should overwrite any existing files with the same name
+            ----------
+            file_name: str
+                The name Misty should use to save the file
+            data: str, default None
+				 Base 64 audio data passed as a string (either data or file must be passed, not both)
+            file: file-like object, default None
+				 Audio file; valid types are .wav, .mp3, .wma and .aac (either data or file must be passed, not both)
+            immediately_apply: bool, default False
+				 Indicates whether Misty should play the file immediately after saving it
+            overwrite_existing: bool, default False
+                Indicates whether the file should overwrite any existing files with the same name
         """
         if data and file:
             raise Exception('Only one of data and file parameters may be used')

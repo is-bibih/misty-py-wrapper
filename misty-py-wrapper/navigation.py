@@ -1,6 +1,9 @@
-from api_wrappers import ApiWrapperMixin
+from .api_wrappers import ApiWrapperMixin
 
 class MappingMixin:
+    """Provide an interface for Misty's mapping functions.
+
+    """
     def __init__(self, ip):
         super().__init__(ip)
 

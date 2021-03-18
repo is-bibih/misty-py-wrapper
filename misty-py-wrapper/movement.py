@@ -1,4 +1,4 @@
-from api_wrappers import ApiWrapperMixin
+from .api_wrappers import ApiWrapperMixin
 from math import radians
 
 class ActuatorMixin(ApiWrapperMixin):
@@ -61,27 +61,38 @@ class Head(ActuatorMixin):
 
         Either velocity of duration must be supplied (not both, not neither).
 
-        Valid ranges:
-            degrees:
-                pitch: -40 (up) to 26 (down)
-                roll: -40 (left) to 40 (right)
-                yaw: -81 (right) to 81 (left)
-            radians:
-                pitch: -0.1662 (up) to 0.6094 (down)
-                roll: -0.75 (left) to 0.75 (right)
-                yaw: -1.57 (right) to 1.57 (left)
-            position:
-                pitch: -5 (up) to 5 (down)
-                roll: -5 (left) to 5 (right)
-                yaw: 5 (right) to 5 (left)
+        Parameters
+        ----------
+        pitch: float
+			 up/down position
+        roll: float
+			 tilt ("ear to shoulder") position
+        yaw: float
+			 left/right position
+        velocity: float, default 10
+			 percentage of max velocity for movement
+        duration: float, default None
+			 time in s for duration of movement
+        units: str, default 'degrees'
+			 unit for position values ('degrees', 'radians' or 'position')
 
-            Parameters
-                pitch (float): up/down position
-                roll (float): tilt ("ear to shoulder") position
-                yaw (float): left/right position
-                velocity (float, default 10): percentage of max velocity for movement
-                duration (float, default None): time in s for duration of movement
-                units (str, default 'degrees'): unit for position values ('degrees', 'radians' or 'position')
+        Notes
+        -----
+        Valid ranges:  
+
+        + degrees:  
+            - pitch: -40 (up) to 26 (down)  
+            - roll: -40 (left) to 40 (right)  
+            - yaw: -81 (right) to 81 (left)  
+        + radians:  
+            - pitch: -0.1662 (up) to 0.6094 (down)  
+            - roll: -0.75 (left) to 0.75 (right)  
+            - yaw: -1.57 (right) to 1.57 (left)  
+        + position:  
+            - pitch: -5 (up) to 5 (down)  
+            - roll: -5 (left) to 5 (right)  
+            - yaw: 5 (right) to 5 (left)  
+
         """
         if not (bool(velocity) ^ bool(duration)):
             raise ValueError('Either velocity or duration must be provided (not both).')
@@ -162,14 +173,22 @@ class Arm(ActuatorMixin):
         """Move either of Misty's arms.
 
             Parameters
-                position (float): the new position to move the arm to
-                velocity (float, default 10): value from 0 to 100 to specify speed of movement
-                units (str, default 'degrees'): either 'degrees', 'radians' or 'position'
+            ----------
+            position: float
+				the new position to move the arm to
+            velocity: float, default 10
+				value from 0 to 100 to specify speed of movement
+            units: str, default 'degrees'
+				either 'degrees', 'radians' or 'position'
 
+            Notes
+            -----
             Valid ranges for position
-                degrees: -29 (up) to 90 (down)
-                radians: -0.50614 (up) to 1.570796 (down)
-                position: -5 (up) to 5 (down)
+
+            * degrees: -29 (up) to 90 (down)
+            * radians: -0.50614 (up) to 1.570796 (down)
+            * position: -5 (up) to 5 (down)
+
         """
         if not units in ('degrees', 'radians', 'position'):
             raise ValueError(f'Invalid value for units {units}')
@@ -224,16 +243,26 @@ class BothArms(ApiWrapperMixin):
         """Move one or both of Misty's arms.
 
             Parameters
-                left_pos (float, default None): the new position to move the left arm to
-                right_pos (float, default None): the new position to move the right arm to
-                left_velocity (float, default None): value from 0 to 100 to specify speed of left movement
-                right_velocity (float, default None): value from 0 to 100 to specify speed of right movement
-                units (str, default 'degrees'): either 'degrees', 'radians' or 'position'
+            ----------
+            left_pos: float, default None
+				the new position to move the left arm to
+            right_pos: float, default None
+				the new position to move the right arm to
+            left_velocity: float, default None
+				value from 0 to 100 to specify speed of left movement
+            right_velocity: float, default None
+				value from 0 to 100 to specify speed of right movement
+            units: str, default 'degrees'
+				either 'degrees', 'radians' or 'position'
 
+            Notes
+            -----
             Valid ranges for left_pos and right_pos
-                degrees: -29 (up) to 90 (down)
-                radians: -0.50614 (up) to 1.570796 (down)
-                position: -5 (up) to 5 (down)
+            
+            * degrees: -29 (up) to 90 (down)
+            * radians: -0.50614 (up) to 1.570796 (down)
+            * position: -5 (up) to 5 (down)
+
         """
         if not units in ('degrees', 'radians', 'position'):
             raise ValueError(f'Invalid value for units {units}')
@@ -289,11 +318,14 @@ class DrivingMixin(ApiWrapperMixin):
         super().__init__(ip)
 
     def drive(self, linear_velocity: float, angular_velocity: float):
-        """Drive Misty at specified linar and angular velocity until cancelled.
+        """Drive Misty at specified linear and angular velocity until cancelled.
 
             Parameters
-                linear_velocity (float): percent value for linear velocity; between -100 (full speed backward) and 100 (full speed forward)
-                angular_velocity (float): percent value for angular velocity; between -100 (full speed rotation clockwise) and 100 (full speed rotation counter-clockwise)
+            ----------
+            linear_velocity: float
+				percent value for linear velocity; between -100 (full speed backward) and 100 (full speed forward)
+            angular_velocity: float
+				percent value for angular velocity; between -100 (full speed rotation clockwise) and 100 (full speed rotation counter-clockwise)
         """
         if not -100 <= linear_velocity <= 100:
             raise ValueError(f'Invalid value for linear velocity {linear_velocity}')
@@ -309,11 +341,16 @@ class DrivingMixin(ApiWrapperMixin):
                   time_ms: float, reverse: bool = False):
         """Drive Misty in an arc until provided heading is reached.
 
-            Parameters:
-                heading (float): absolute heading Misty should reach when the arc is complete (Misty's current heading is the value for yaw from the IMU named object), between -180 and 360 degrees
-                radius (float): radius in meters for the arc
-                time_ms (float): duration in milliseconds for Misty's movement
-                reverse (bool, default False): if True, Misty drives in reverse
+            Parameters
+            ----------
+            heading: float
+				absolute heading Misty should reach when the arc is complete (Misty's current heading is the value for yaw from the IMU named object), between -180 and 360 degrees
+            radius: float
+				radius in meters for the arc
+            time_ms: float
+				duration in milliseconds for Misty's movement
+            reverse: bool, default False
+				if `True`, Misty drives in reverse
         """
         if not -180 <= heading <= 360:
             raise ValueError(f'Invalid value for heading {heading}')
@@ -331,13 +368,18 @@ class DrivingMixin(ApiWrapperMixin):
                 time_ms: float, reverse: bool = False):
         """Drive Misty to maintain desired heading.
 
-        Misty's current heading should be within two degrees of the desired absolute heading in order to avoid large correction velocities. Use drive_arc to adjust heading if necessary.
+        Misty's current heading should be within two degrees of the desired absolute heading in order to avoid large correction velocities. Use `drive_arc` to adjust heading if necessary.
 
-            Parameters
-                heading (float): absolute heading to maintain, between -180 and 360 degrees
-                distance (float): distance in meters Misty should drive
-                time_ms (float): duration in milliseconds that Misty's movement should last
-                reverse (bool, default False): if True, Misty drives in reverse
+        Parameters
+        ----------
+        heading: float
+			absolute heading to maintain, between -180 and 360 degrees
+        distance: float
+			distance in meters Misty should drive
+        time_ms: float
+			duration in milliseconds that Misty's movement should last
+        reverse: bool, default False
+			if `True`, Misty drives in reverse
         """
         if not -180 <= heading <= 360:
             raise ValueError(f'Invalid value for heading {heading}')
@@ -356,10 +398,15 @@ class DrivingMixin(ApiWrapperMixin):
         """Drive Misty forward or backward at given linear and angular speed for a certain amount of time.
 
             Parameters
-                linear_velocity (float): percent that sets speed for driving in a straight line (100 is full speed forward, -100 is full speed backward)
-                angular_velocity (float): percent that sets speed and direction for rotation (-100 is full speed rotation clockwise, -100 is full speed rotation counter-clockwise)
-                time_ms (int): duration for movement in milliseconds, must be larger than 100 or Misty will not move
-                degree (float, default None): amount of degrees to turn (this recalculates linear velocity)
+            ----------
+            linear_velocity: float
+				percent that sets speed for driving in a straight line (100 is full speed forward, -100 is full speed backward)
+            angular_velocity: float
+				percent that sets speed and direction for rotation (-100 is full speed rotation clockwise, -100 is full speed rotation counter-clockwise)
+            time_ms: int
+				duration for movement in milliseconds, must be larger than 100 or Misty will not move
+            degree: float, default None
+				amount of degrees to turn (this recalculates linear velocity)
         """
         for param, param_name in zip(
                 (linear_velocity, angular_velocity),
@@ -395,7 +442,7 @@ class DrivingMixin(ApiWrapperMixin):
         self.wrapper_post(endpoint, params)
 
     def halt(self):
-        """Halt all motor controllers, including drive motor, head, neck, and arms/
+        """Halt all motor controllers, including drive motor, head, neck, and arms.
         """
         endpoint = 'halt'
         self.wrapper_post(endpoint)
@@ -409,5 +456,4 @@ class DrivingMixin(ApiWrapperMixin):
         endpoint = 'drive/stop'
         params = {'Hold': hold}
         self.wrapper_post(endpoint, params)
-
 
