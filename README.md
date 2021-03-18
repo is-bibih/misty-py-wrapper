@@ -2,6 +2,8 @@
 
 (another) unofficial python wrapper for the Misty REST and WebSockets API, with text-to-speech
 
+documentation: https://is-bibih.github.io/misty-py-wrapper/
+
 implemented:
   * audio: set volume, save/delete audio files, get file list
   * text-to-speech: send text and play generated speech
