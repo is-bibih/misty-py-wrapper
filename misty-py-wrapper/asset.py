@@ -1,3 +1,7 @@
+"""Get, set and delete Misty's audio, video and image files. The corresponding documentation
+for the API can be found at https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#asset
+"""
+
 from .api_wrappers import ApiWrapperMixin
 import base64
 import json

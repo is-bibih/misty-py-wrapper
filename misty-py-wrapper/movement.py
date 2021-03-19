@@ -1,3 +1,14 @@
+"""Programmatically drive and stop Misty, and move the head and arms.
+The corresponding documentation for the Misty API is at 
+https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#movement
+
+The wrapper provides `Head` and `BothArms` objects as attributes of the
+`Robot` class, which can get and set their positions. These inherit from
+or have as attributes the `ActuatorMixin` and `Arm` objects.
+
+The `DrivingMixin`, which the `Robot` class inherits from, provides driving functions.
+"""
+
 from .api_wrappers import ApiWrapperMixin
 from math import radians
 
@@ -429,8 +440,11 @@ class DrivingMixin(ApiWrapperMixin):
         """[Not functional] Drive Misty with speeds given for each track.
 
             Parameters
-                left_speed (float): speed for the left track, between -100 (full speed backwards) and 100 (full speed forwards)
-                right_speed (float): speed for the right track, between -100 (full speed backwards) and 100 (full speed forwards)
+            ----------
+            left_speed: float
+				speed for the left track, between -100 (full speed backwards) and 100 (full speed forwards)
+            right_speed: float
+				speed for the right track, between -100 (full speed backwards) and 100 (full speed forwards)
         """
         if not -100 <= left_speed <= 100:
             raise ValueError(f'Invalid value for left_speed {left_speed}')
@@ -451,7 +465,9 @@ class DrivingMixin(ApiWrapperMixin):
         """Stop Misty's movement.
 
             Parameters
-                hold (bool, default False): if true, Misty's drive motors remain engaged and attempt to hold the robot in its current position (useful on inclines); should be avoided in most cases
+            ----------
+            hold: bool, default False
+                if true, Misty's drive motors remain engaged and attempt to hold the robot in its current position (useful on inclines); should be avoided in most cases
         """
         endpoint = 'drive/stop'
         params = {'Hold': hold}

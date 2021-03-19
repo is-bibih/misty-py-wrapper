@@ -1,3 +1,12 @@
+"""This module provides an interface for Misty's SLAM and camera functions.
+This includes mapping and tracking. The documentation for Misty's corresponding
+API functionality can be found at
+https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#navigation
+
+Currently, only the functions related to mapping are implemented. These are
+found in the `MappingMixin` class, from which the `Robot` class inherits.
+"""
+
 from .api_wrappers import ApiWrapperMixin
 
 class MappingMixin:
