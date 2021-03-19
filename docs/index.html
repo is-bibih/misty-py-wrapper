@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
 <title>misty-py-wrapper API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Provide an interface to Misty&#39;s REST API and WebSockets …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,9 +19,65 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Namespace <code>misty-py-wrapper</code></h1>
+<h1 class="title">Package <code>misty-py-wrapper</code></h1>
 </header>
 <section id="section-intro">
+<p>Provide an interface to Misty's REST API and WebSockets.</p>
+<p>The <code>Robot</code> object from the <code><a title="misty-py-wrapper.misty" href="misty.html">misty-py-wrapper.misty</a></code> module provides attributes that make it
+possible to programmatically interact with the Misty API. Functionality
+is divided into modules, each of which correspond to the categories in Misty's
+documentation (<a href="https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference">https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference</a>).
+The modules provide mixin classes for the <code>Robot</code> object (to make the
+code more maintainable). The following modules have been implemented:</p>
+<ul>
+<li>Asset (in progress)</li>
+<li>Movement</li>
+<li>Navigation (in progress)</li>
+<li>System (in progress)</li>
+</ul>
+<p>These are still pending:</p>
+<ul>
+<li>Backpack</li>
+<li>Event</li>
+<li>Expression</li>
+<li>External requests</li>
+<li>Perception</li>
+<li>Skill management</li>
+</ul>
+<p>Additionally, the module provides wrappers for GET, POST and DELETE
+requests to Misty.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Provide an interface to Misty&#39;s REST API and WebSockets.
+
+The `Robot` object from the `misty` module provides attributes that make it 
+possible to programmatically interact with the Misty API. Functionality 
+is divided into modules, each of which correspond to the categories in Misty&#39;s 
+documentation (https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference).
+The modules provide mixin classes for the `Robot` object (to make the 
+code more maintainable). The following modules have been implemented:
+
+* Asset (in progress)
+* Movement
+* Navigation (in progress)
+* System (in progress)
+
+These are still pending:
+
+* Backpack
+* Event
+* Expression
+* External requests
+* Perception
+* Skill management
+
+Additionally, the module provides wrappers for GET, POST and DELETE
+requests to Misty.
+
+&#34;&#34;&#34;</code></pre>
+</details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
@@ -32,7 +88,8 @@
 </dd>
 <dt><code class="name"><a title="misty-py-wrapper.asset" href="asset.html">misty-py-wrapper.asset</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get, set and delete Misty's audio, video and image files. The corresponding documentation
+for the API can be found at …</p></div>
 </dd>
 <dt><code class="name"><a title="misty-py-wrapper.misty" href="misty.html">misty-py-wrapper.misty</a></code></dt>
 <dd>
@@ -40,11 +97,14 @@
 </dd>
 <dt><code class="name"><a title="misty-py-wrapper.movement" href="movement.html">misty-py-wrapper.movement</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Programmatically drive and stop Misty, and move the head and arms.
+The corresponding documentation for the Misty API is at
+…</p></div>
 </dd>
 <dt><code class="name"><a title="misty-py-wrapper.navigation" href="navigation.html">misty-py-wrapper.navigation</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This module provides an interface for Misty's SLAM and camera functions.
+This includes mapping and tracking. The documentation for Misty's …</p></div>
 </dd>
 <dt><code class="name"><a title="misty-py-wrapper.system" href="system.html">misty-py-wrapper.system</a></code></dt>
 <dd>
