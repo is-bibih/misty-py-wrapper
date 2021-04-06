@@ -1,10 +1,13 @@
 
-# ignore python cache files
+# python cache files
 *__pycache__/
 
-# ignore jupyter checkpoints
+# jupyter checkpoints
 *.ipynb_checkpoints/
 
-# ignore pyenv python version
+# pyenv python version
 *.python-version
+
+# placeholder directory for documentation html
+new-docs/
 
