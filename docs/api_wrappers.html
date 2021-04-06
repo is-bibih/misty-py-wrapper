@@ -92,10 +92,10 @@ class ApiWrapperMixin:
         else:
             raise Exception(resp[&#39;error&#39;])
 
-    def wrapper_post(self, endpoint, params=None, timeout_ms=10000):
+    def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
         &#34;&#34;&#34;Do POST requests for the given endpoint.&#34;&#34;&#34;
         url = self.api_url + endpoint
-        resp = requests.post(url, json=params, timeout=timeout_ms).json()
+        resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
         if resp[&#39;status&#39;] == &#39;Failed&#39;:
             raise Exception(resp[&#39;error&#39;])
 
@@ -256,10 +256,10 @@ class WebSocketStream:
         else:
             raise Exception(resp[&#39;error&#39;])
 
-    def wrapper_post(self, endpoint, params=None, timeout_ms=10000):
+    def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
         &#34;&#34;&#34;Do POST requests for the given endpoint.&#34;&#34;&#34;
         url = self.api_url + endpoint
-        resp = requests.post(url, json=params, timeout=timeout_ms).json()
+        resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
         if resp[&#39;status&#39;] == &#39;Failed&#39;:
             raise Exception(resp[&#39;error&#39;])
 
@@ -277,6 +277,9 @@ class WebSocketStream:
 <li><a title="misty-py-wrapper.movement.ActuatorMixin" href="movement.html#misty-py-wrapper.movement.ActuatorMixin">ActuatorMixin</a></li>
 <li><a title="misty-py-wrapper.movement.BothArms" href="movement.html#misty-py-wrapper.movement.BothArms">BothArms</a></li>
 <li><a title="misty-py-wrapper.movement.DrivingMixin" href="movement.html#misty-py-wrapper.movement.DrivingMixin">DrivingMixin</a></li>
+<li><a title="misty-py-wrapper.navigation.MappingMixin" href="navigation.html#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></li>
+<li><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></li>
+<li><a title="misty-py-wrapper.navigation.TrackingMixin" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></li>
 <li><a title="misty-py-wrapper.system.SystemMixin" href="system.html#misty-py-wrapper.system.SystemMixin">SystemMixin</a></li>
 </ul>
 <h3>Methods</h3>
@@ -387,7 +390,7 @@ class WebSocketStream:
 </details>
 </dd>
 <dt id="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post"><code class="name flex">
-<span>def <span class="ident">wrapper_post</span></span>(<span>self, endpoint, params=None, timeout_ms=10000)</span>
+<span>def <span class="ident">wrapper_post</span></span>(<span>self, endpoint, params=None, timeout_ms=10000, headers=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Do POST requests for the given endpoint.</p></div>
@@ -395,10 +398,10 @@ class WebSocketStream:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def wrapper_post(self, endpoint, params=None, timeout_ms=10000):
+<pre><code class="python">def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
     &#34;&#34;&#34;Do POST requests for the given endpoint.&#34;&#34;&#34;
     url = self.api_url + endpoint
-    resp = requests.post(url, json=params, timeout=timeout_ms).json()
+    resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
     if resp[&#39;status&#39;] == &#39;Failed&#39;:
         raise Exception(resp[&#39;error&#39;])</code></pre>
 </details>
