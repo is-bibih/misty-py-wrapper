@@ -64,10 +64,10 @@ class ApiWrapperMixin:
         else:
             raise Exception(resp['error'])
 
-    def wrapper_post(self, endpoint, params=None, timeout_ms=10000):
+    def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
         """Do POST requests for the given endpoint."""
         url = self.api_url + endpoint
-        resp = requests.post(url, json=params, timeout=timeout_ms).json()
+        resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
         if resp['status'] == 'Failed':
             raise Exception(resp['error'])
 

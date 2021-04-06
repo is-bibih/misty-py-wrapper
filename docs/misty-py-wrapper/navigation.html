@@ -1,0 +1,2043 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>misty-py-wrapper.navigation API documentation</title>
+<meta name="description" content="This module provides an interface for Misty&#39;s SLAM and camera functions.
+This includes mapping and tracking. The documentation for Misty&#39;s …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>misty-py-wrapper.navigation</code></h1>
+</header>
+<section id="section-intro">
+<p>This module provides an interface for Misty's SLAM and camera functions.
+This includes mapping and tracking. The documentation for Misty's corresponding
+API functionality can be found at
+<a href="https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#navigation">https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#navigation</a></p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;This module provides an interface for Misty&#39;s SLAM and camera functions.
+This includes mapping and tracking. The documentation for Misty&#39;s corresponding
+API functionality can be found at
+https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#navigation
+&#34;&#34;&#34;
+
+import base64
+from .api_wrappers import ApiWrapperMixin
+
+class MappingMixin(ApiWrapperMixin):
+    &#34;&#34;&#34;Provide an interface for Misty&#39;s mapping functions.
+
+    &#34;&#34;&#34;
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def delete_slam_map(self, key: str):
+        &#34;&#34;&#34;Delete one of Misty&#39;s saved SLAM maps.
+
+        Parameters
+        ----------
+        key: str
+            unique key identifier for map
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/map&#39;
+        params = {&#39;key&#39;: key}
+        self.wrapper_delete(endpoint, params)
+
+    def get_map(self):
+        &#34;&#34;&#34;Obtain occupancy grid data for currently active map.
+        
+        Notes
+        -----
+        Values for occupancy grid:
+
+        * 0: unknown
+        * 1: open
+        * 2: occupied
+        * 3: covered
+
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/map&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_current_slam_map(self):
+        &#34;&#34;&#34;Obtain key for currently active map.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/current&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_maps(self):
+        &#34;&#34;&#34;Obtain a list of keys and names for existing maps.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/ids&#39;
+        return self.wrapper_get(endpoint)
+
+    def rename_slam_map(self, key: str, name: str):
+        &#34;&#34;&#34;Rename the existing map corresponding to the given key.
+
+        Paremeters
+        ----------
+        key: str
+                        unique key identifier for map
+        name: str
+                        new name for the map corresponding to key
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/map/rename&#39;
+        params = {&#39;Key&#39;: key, &#39;Name&#39;: name}
+        self.wrapper_post(endpoint, params)
+
+    def start_mapping(self):
+        &#34;&#34;&#34;Begin mapping for an area.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/start&#39;
+        self.wrapper_post(endpoint)
+
+    def stop_mapping(self):
+        &#34;&#34;&#34;Stop mapping process.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/stop&#39;
+        self.wrapper_post(endpoint)
+
+
+class TrackingMixin(ApiWrapperMixin):
+    &#34;&#34;&#34;Provide an interface for Misty&#39;s tracking functions.
+
+    &#34;&#34;&#34;
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def drive_to_location(self, x: int, y: int):
+        &#34;&#34;&#34;Drives to provided destination at (x, y).
+
+        ..IMPORTANT::
+          Use `start_tracking` before calling this function
+          to have Misty start tracking the location, and use `stop_tracking`
+          to stop tracking after arriving to the destination.
+
+        Parameters
+        ----------
+        x: int
+            X coordinate for the cell in the occupancy grid to drive to.
+            In the occupancy grid, the X coordinate represents the
+            index of the array that contains the desired cell.
+        y: int
+            Y coordinate for the cell in the occupancy grid to drive to.
+            In the occupancy grid, the Y coordinate represents the
+            index of the desired cell, within its corresponding array in
+            the occupancy grid.
+        &#34;&#34;&#34;
+        dest = f&#39;{x}:{y}&#39;
+        endpoint = &#39;drive/coordinates&#39;
+        params = {&#39;Destination&#39;: dest}
+        self.wrapper_post(endpoint, params)
+
+    def follow_path(self, path: list, velocity: float = 0.5,
+                    full_spin_duration: float = 15, 
+                    waypoint_accuracy: float = 0.1,
+                    rotate_threshold: float = 10):
+        &#34;&#34;&#34;Drives Misty on the path defined by a list of given coordinates.
+
+        ..IMPORTANT:
+          Use `start_tracking` before calling this function to have
+          Misty start tracking the location. Misty will not be able to
+          follow a path if there are unmapped obstacles in the way.
+
+        Parameters
+        ----------
+        path: list of [x, y] pairs
+           A list of coordinate pairs, each of which represents a waypoint
+           on Misty&#39;s path.
+        velocity: float, default 0.5
+            A fraction of Misty&#39;s maximum velocity (should be between 0 and
+            1 exclusive). Determines how fast Misty drives in a straight line.
+        full_spin_duration: float, default 15
+            Duration in seconds it takes for Misty to complete a 360 degree
+            spin; determines how fast Misty spins or pivots.
+        waypoint_accuracy: float, default 0.1
+            How close in meters Misty gets to a waypoint before considering
+            itself to have reached it.
+        rotate_threshold: float, default 10
+            When Misty&#39;s bearing relative to the next waypoint (in degrees)
+            is larger than the threshold, the robot pivots until it becomes
+            lower than the threshold.
+        &#34;&#34;&#34;
+        if not 0 &lt; velocity &lt; 1:
+            raise ValueError(&#39;Invalid value for velocity, should be between 0 and 1.&#39;)
+        if waypoint_accuracy &lt;= 0:
+            raise ValueError(&#39;Invalid value for waypoint_accuracy, should be&#39;
+                             + &#39;greater than 0&#39;)
+        if not 0 &lt;= rotate_threshold &lt;= 360:
+            raise ValueError(&#39;Invalid value for rotate_threshold, should be&#39;
+                             + &#39;between 0 and 360&#39;)
+
+        path_coords = [f&#39;{x}:{y}&#39; for x, y in path]
+        strpath = &#39;,&#39;.join(path_coords)
+
+        endpoint = &#39;drive/path&#39;
+        params = {
+            &#39;Path&#39;: strpath,
+            &#39;Velocity&#39;: velocity,
+            &#39;FullSpinDuration&#39;: full_spin_duration,
+            &#39;WaypointAccuracy&#39;: waypoint_accuracy,
+            &#39;RotateThreshold&#39;: rotate_threshold,
+        }
+        self.wrapper_post(endpoint, params)
+
+
+    def start_tracking(self):
+        &#34;&#34;&#34;Make Misty start tracking its location.&#34;&#34;&#34;
+        endpoint = &#39;slam/track/start&#39;
+        self.wrapper_post(endpoint)
+
+
+    def stop_tracking(self):
+        &#34;&#34;&#34;Make Misty stop tracking its location.&#34;&#34;&#34;
+        endpoint = &#39;slam/track/stop&#39;
+        self.wrapper_post(endpoint)
+
+class SlamSettingsMixin(ApiWrapperMixin):
+    &#34;&#34;&#34;Provide an interface to Misty&#39;s SLAM settings.&#34;&#34;&#34;
+
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def get_hazard_settings(self):
+        &#34;&#34;&#34;Obtain the current hazards system settings for Misty&#39;s time-of-flight and bump sensors.
+
+        Returns a dictionary with the following key-value pairs:
+
+        * `bumpSensors` (array): An array of objects that describe whether each bump sensor is
+          enabled or disabled. Each object in the bumpSensors array includes the following
+          key/value pairs:
+
+            - `enabled` (bool): Whether hazards are enabled for a sensor (`true`) or not (`false`).
+            - `sensorName` (str): The name of this bump sensor. May be one of
+
+                + `Bump_FrontRight`
+                + `Bump_FrontLeft`
+                + `Bump_RearRight`
+                + `Bump_RearLeft`
+
+        * `timeOfFlightSensors` (array): An array of objects that describe the distance
+          threshold that triggers a hazard response for each of Misty&#39;s time-of-flight
+          sensors. Includes the following key/value pairs:
+
+            - `sensorName` (str): The name of this time-of-flight sensor. One of the following:
+
+                + `TOF_Right`
+                + `TOF_Center`
+                + `TOF_Left`
+                + `TOF_Back`
+                + `TOF_DownFrontRight`
+                + `TOF_DownFrontRight`
+                + `TOF_DownFrontLeft`
+                + `TOF_DownBackRight`
+                + `TOF_DownBackLeft`
+
+            - `threshold` (double): The minimum distance (in meters) that triggers a hazard
+              state for this time-of-flight sensor. A threshold value of 0 means hazards
+              are disabled for this sensor.
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;hazards/settings&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_ir_exposure_and_gain(self):
+        &#34;&#34;&#34;Obtain the current exposure and gain settings for the infrared cameras in the
+        Occipital Structure Core depth sensor.
+
+        Returns a dictionary with the following key/value pairs:
+
+        * `exposure` (float): The current exposure levels for the infrared cameras in
+          the depth sensor (in seconds).
+        * `gain` (int): The current gain levels for the infrared cameras in the
+          depth sensor (in dB).
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;slam/settings/ir&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_navigation_diagnostics(self):
+        &#34;&#34;&#34;Obtain diagnostic information about Misty&#39;s navigation system.
+
+        Returns a stringified JSON object with diagnostic information about the current
+        status of Misty&#39;s SLAM system.
+
+        Notes
+        -----
+        The information in the data object for this command is primarily used by the Misty
+        Robotics engineering and support staff to troubleshoot and root-cause issues with
+        Misty&#39;s SLAM system. The contents of this data object are likely to change without
+        notice in future system updates.
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;slam/diagnostics&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_visible_exposure_and_gain(self):
+        &#34;&#34;&#34;Obtain the current exposure and gain settings for the fisheye camera in the
+        Occipital Structure Core depth sensor.
+
+        Returns a dictionary with the following key/value pairs:
+
+        * `exposure` (float): The current exposure levels for the infrared cameras in
+          the depth sensor (in seconds).
+        * `gain` (int): The current gain levels for the infrared cameras in the
+          depth sensor (in dB).
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;slam/settings/ir&#39;
+        return self.wrapper_get(endpoint)
+
+    def reset_slam(self):
+        &#34;&#34;&#34;Reset Misty&#39;s SLAM sensors.&#34;&#34;&#34;
+
+        endpoint = &#39;slam/reset&#39;
+        self.wrapper_post(endpoint)
+
+    def set_slam_ir_exposure_and_gain(self, exposure, gain):
+        &#34;&#34;&#34;Set the exposure and gain settings for the infrared cameras in the Occipital
+        Structure Core depth sensor.
+
+        ..IMPORTANT::
+          This can impact the performance of Misty&#39;s SLAM system. It is recommended to avoid
+          changing these settings.
+
+        Parameters
+        ----------
+        exposure: float
+            Exposure levels for the infrared cameras in the depth sensor (in seconds).
+            Should be a value between 0.001 and 0.033.
+        gain: int
+            Gain levels for the infrared cameras in the depth sensor (in dB). Should be
+            a value between 0 and 3.
+
+        Notes
+        -----
+        If this function is called when the SLAM system is not streaming, the camera
+        settings will not update. Use start_slam_streaming to begin streaming.
+
+        &#34;&#34;&#34;
+
+        if not 0.001 &lt;= exposure &lt;= 0.033:
+            raise ValueError(&#39;Invalid value for exposure, should be between 0.001 and 0.033.&#39;)
+        if not int(gain) == gain:
+            raise TypeError(&#39;Invalid type for gain argument, should be int.&#39;)
+        elif not 0 &lt;= gain &lt;= 3:
+            raise ValueError(&#39;Invalid value for gain, should be between 0 and 3.&#39;)
+
+        params = {&#39;Exposure&#39;: exposure, &#39;Gain&#39;: int(gain)}
+        endpoint = &#39;slam/settings/ir&#39;
+        self.wrapper_post(endpoint, params)
+
+    def set_slam_visible_exposure_and_gain(self, exposure, gain):
+        &#34;&#34;&#34;Set the exposure and gain settings for the fisheye camera in the Occipital
+        Structure Core depth sensor.
+
+        Parameters
+        ----------
+        exposure: float
+            Exposure levels for the fisheye camera in the depth sensor (in seconds).
+            Should be a value between 0.001 and 0.033.
+        gain: int
+            Gain levels for the fisheye camera in the depth sensor (in dB). Should be
+            a value between 1 and 8.
+
+        Notes
+        -----
+        If this function is called when the SLAM system is not streaming, the camera
+        settings will not update. Use start_slam_streaming to begin streaming.
+
+        &#34;&#34;&#34;
+
+        if not 0.001 &lt;= exposure &lt;= 0.033:
+            raise ValueError(&#39;Invalid value for exposure, should be between 0.001 and 0.033.&#39;)
+        if not int(gain) == gain:
+            raise TypeError(&#39;Invalid type for gain argument, should be int.&#39;)
+        elif not 0 &lt;= gain &lt;= 8:
+            raise ValueError(&#39;Invalid value for gain, should be between 0 and 8.&#39;)
+
+        params = {&#39;Exposure&#39;: exposure, &#39;Gain&#39;: int(gain)}
+        endpoint = &#39;slam/settings/visible&#39;
+        self.wrapper_post(endpoint, params)
+
+    def start_slam_streaming(self):
+        &#34;&#34;&#34;Open the data stream from the Occipital Structure Core depth sensor, so you can
+        obtain image and depth data when Misty is not actively tracking or mapping.
+
+        ..IMPORTANT:
+          Use the `stop_slam_streaming` function to close the depth sensor data stream after
+          using it. This turns off the laser in the depth sensor and lowers power consumption.
+
+        Notes
+        -----
+        Misty&#39;s 4K camera may not work while the depth sensor data stream is open.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/streaming/start&#39;
+        self.wrapper_post(endpoint)
+
+    def stop_slam_streaming(self):
+        &#34;&#34;&#34;Close the data stream from the Occipital Structure Core depth sensor.
+
+        ..IMPORTANT:
+          Always use this function after using `start_slam_streaming` or any functions that
+          use Misty&#39;s Occipital Structure Core depth sensor.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/streaming/stop&#39;
+        self.wrapper_post(endpoint)
+
+    def update_hazard_settings(self,
+                               revert_to_default: bool = False,
+                               disable_time_of_flights: bool = False,
+                               disable_bump_sensors: bool = False,
+                               bump_sensors_enabled: list = None,
+                               time_of_flight_thresholds: list = None):
+        &#34;&#34;&#34;Change the hazard system settings for Misty&#39;s bump and time-of-flight sensors.
+
+        Enable or disable hazard triggers for all bump or time-of-flight sensors, or adjust
+        the hazard trigger settings for each sensor individually. See the documentation at
+        https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#updatehazardsettings
+        for the default values.
+
+        .. WARNING::
+           Misty cannot safely drive over ledges taller than 0.06 m. Navigating drops higher
+           than 0.06 meters can cause Misty to tip or fall and become damaged.
+
+        Parameters
+        ----------
+        revert_to_default: bool, default False
+            If `True`, sets Misty to use default hazard system settings. No efect if `False`.
+        disable_time_of_flights: bool, default False
+            If `True`, disables hazards for all time-of-flight sensors by setting their
+            `threshold` values to 0.
+        disable_bump_sensors: bool, default False
+            If `True`, disables hazards for all bump sensors.
+        bump_sensors_enabled: list of (sensor_name, enabled), default None
+            An unordered list of up to four tuples that you can use to turn hazards
+            on or off for each of Misty&#39;s bump sensors. It only needs to include tuples 
+            for the sensors that you want to adjust. Each tuple must include the
+            following values:
+
+            * `sensor_name` (`str`): The name of one of Misty&#39;s bump sensors. May be one of
+              `Bump_FrontRight`, `Bump_FrontLeft`, `Bump_RearRight` and `Bump_RearLeft`.
+            * `enabled` (`bool`): Whether hazards should be enabled for the corresponding
+              bump sensor (`True`) or not (`False`).
+
+        time_of_flight_thresholds: list of (sensor_name, threshold), default None
+            An unordered list of up to eight tuples that set the minimum distance threshold
+            to trigger a hazard state for each of Misty&#39;s TOF sensors. It only needs to
+            include tuples for the sensors you want to adjust. Each tuple must include the
+            following values.
+
+            * `sensor_name` (`str`): The name of one of Misty&#39;s time-of-flight sensors.
+              May be one of `TOF_DownFrontRight`, `TOF_DownFrontLeft`, `TOF_DownBackRight`,
+              `TOF_DownBackLeft`, `TOF_Right`, `TOF_Left`, `TOF_Center`, and `TOF_Back`.
+            * `threshold` (`double`): Minimum distance in meters that triggers a hazard
+               state for the corresponding TOF sensor. A threshold of 0 disables hazards.
+
+        Notes
+        -----
+        The settings for Misty&#39;s hazard system reset to default values every time the robot
+        boots up. This means changes applied with this function do not save across reboot cycles.
+
+        &#34;&#34;&#34;
+
+        if bump_sensors_enabled:
+            bump_sensors_enabled = [{&#39;sensorName&#39;: name, &#39;enabled&#39;: enabled} \
+                                    for name, enabled in bump_sensors_enabled]
+        if time_of_flight_thresholds:
+            time_of_flight_thresholds = [{&#39;sensorName&#39;: name, &#39;threshold&#39;: threshold} \
+                                         for name, threshold in time_of_flight_thresholds]
+
+        params = {
+            &#39;RevertToDefault&#39;: revert_to_default,
+            &#39;DisableTimeOfFlights&#39;: disable_time_of_flights,
+            &#39;BumpSensorsEnabled&#39;: bump_sensors_enabled,
+            &#39;TimeOfFlightThresholds&#39;: time_of_flight_thresholds,
+        }
+
+        headers = {&#39;Content-type&#39;: &#39;application/json&#39;}
+        endpoint = &#39;hazard/updatebasesettings&#39;
+        self.wrapper_post(endpoint, params=params, headers=headers)
+
+    def take_depth_picture(self):
+        &#34;&#34;&#34;Provide the current distance of objects from Misty&#39;s Occipital Structure Core depth sensor.
+
+        Returns a dictionary with a value for `image`, which contains an array of numerical
+        values which represent the distance in millimeters from the sensor for each pixel in
+        the captured image. The `image` array should be interpreted as a matrix of size
+        `height` x `width`, which are the other key/value pairs in the dictionary.
+
+        Notes
+        -----
+        Depending on the scene being viewed, the sensor may return a large proportion of
+        unknown values as `None`.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;cameras/depth&#39;
+        return self.wrapper_get(endpoint)
+
+    def take_fisheye_picture(self):
+        &#34;&#34;&#34;Take a picture using Misty&#39;s Occipital Structure Core depth sensor.
+
+        Returns the data for a 480 x 640 png image. This can be written to a file or be
+        further processed.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;cameras/fisheye?Base64=true&#39;
+        data = self.wrapper_get(endpoint)
+        return base64.b64decode(data[&#39;base64&#39;])</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="misty-py-wrapper.navigation.MappingMixin"><code class="flex name class">
+<span>class <span class="ident">MappingMixin</span></span>
+<span>(</span><span>ip)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide an interface for Misty's mapping functions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MappingMixin(ApiWrapperMixin):
+    &#34;&#34;&#34;Provide an interface for Misty&#39;s mapping functions.
+
+    &#34;&#34;&#34;
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def delete_slam_map(self, key: str):
+        &#34;&#34;&#34;Delete one of Misty&#39;s saved SLAM maps.
+
+        Parameters
+        ----------
+        key: str
+            unique key identifier for map
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/map&#39;
+        params = {&#39;key&#39;: key}
+        self.wrapper_delete(endpoint, params)
+
+    def get_map(self):
+        &#34;&#34;&#34;Obtain occupancy grid data for currently active map.
+        
+        Notes
+        -----
+        Values for occupancy grid:
+
+        * 0: unknown
+        * 1: open
+        * 2: occupied
+        * 3: covered
+
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/map&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_current_slam_map(self):
+        &#34;&#34;&#34;Obtain key for currently active map.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/current&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_maps(self):
+        &#34;&#34;&#34;Obtain a list of keys and names for existing maps.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/ids&#39;
+        return self.wrapper_get(endpoint)
+
+    def rename_slam_map(self, key: str, name: str):
+        &#34;&#34;&#34;Rename the existing map corresponding to the given key.
+
+        Paremeters
+        ----------
+        key: str
+                        unique key identifier for map
+        name: str
+                        new name for the map corresponding to key
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/map/rename&#39;
+        params = {&#39;Key&#39;: key, &#39;Name&#39;: name}
+        self.wrapper_post(endpoint, params)
+
+    def start_mapping(self):
+        &#34;&#34;&#34;Begin mapping for an area.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/start&#39;
+        self.wrapper_post(endpoint)
+
+    def stop_mapping(self):
+        &#34;&#34;&#34;Stop mapping process.&#34;&#34;&#34;
+        endpoint = &#39;slam/map/stop&#39;
+        self.wrapper_post(endpoint)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="misty-py-wrapper.navigation.MappingMixin.delete_slam_map"><code class="name flex">
+<span>def <span class="ident">delete_slam_map</span></span>(<span>self, key: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Delete one of Misty's saved SLAM maps.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>key</code></strong> :&ensp;<code>str</code></dt>
+<dd>unique key identifier for map</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_slam_map(self, key: str):
+    &#34;&#34;&#34;Delete one of Misty&#39;s saved SLAM maps.
+
+    Parameters
+    ----------
+    key: str
+        unique key identifier for map
+    &#34;&#34;&#34;
+    endpoint = &#39;slam/map&#39;
+    params = {&#39;key&#39;: key}
+    self.wrapper_delete(endpoint, params)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.MappingMixin.get_current_slam_map"><code class="name flex">
+<span>def <span class="ident">get_current_slam_map</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain key for currently active map.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_current_slam_map(self):
+    &#34;&#34;&#34;Obtain key for currently active map.&#34;&#34;&#34;
+    endpoint = &#39;slam/map/current&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.MappingMixin.get_map"><code class="name flex">
+<span>def <span class="ident">get_map</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain occupancy grid data for currently active map.</p>
+<h2 id="notes">Notes</h2>
+<p>Values for occupancy grid:</p>
+<ul>
+<li>0: unknown</li>
+<li>1: open</li>
+<li>2: occupied</li>
+<li>3: covered</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_map(self):
+    &#34;&#34;&#34;Obtain occupancy grid data for currently active map.
+    
+    Notes
+    -----
+    Values for occupancy grid:
+
+    * 0: unknown
+    * 1: open
+    * 2: occupied
+    * 3: covered
+
+    &#34;&#34;&#34;
+    endpoint = &#39;slam/map&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.MappingMixin.get_slam_maps"><code class="name flex">
+<span>def <span class="ident">get_slam_maps</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain a list of keys and names for existing maps.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_slam_maps(self):
+    &#34;&#34;&#34;Obtain a list of keys and names for existing maps.&#34;&#34;&#34;
+    endpoint = &#39;slam/map/ids&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.MappingMixin.rename_slam_map"><code class="name flex">
+<span>def <span class="ident">rename_slam_map</span></span>(<span>self, key: str, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rename the existing map corresponding to the given key.</p>
+<h2 id="paremeters">Paremeters</h2>
+<p>key: str
+unique key identifier for map
+name: str
+new name for the map corresponding to key</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rename_slam_map(self, key: str, name: str):
+    &#34;&#34;&#34;Rename the existing map corresponding to the given key.
+
+    Paremeters
+    ----------
+    key: str
+                    unique key identifier for map
+    name: str
+                    new name for the map corresponding to key
+    &#34;&#34;&#34;
+    endpoint = &#39;slam/map/rename&#39;
+    params = {&#39;Key&#39;: key, &#39;Name&#39;: name}
+    self.wrapper_post(endpoint, params)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.MappingMixin.start_mapping"><code class="name flex">
+<span>def <span class="ident">start_mapping</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Begin mapping for an area.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start_mapping(self):
+    &#34;&#34;&#34;Begin mapping for an area.&#34;&#34;&#34;
+    endpoint = &#39;slam/map/start&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.MappingMixin.stop_mapping"><code class="name flex">
+<span>def <span class="ident">stop_mapping</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Stop mapping process.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_mapping(self):
+    &#34;&#34;&#34;Stop mapping process.&#34;&#34;&#34;
+    endpoint = &#39;slam/map/stop&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin"><code class="flex name class">
+<span>class <span class="ident">SlamSettingsMixin</span></span>
+<span>(</span><span>ip)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide an interface to Misty's SLAM settings.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SlamSettingsMixin(ApiWrapperMixin):
+    &#34;&#34;&#34;Provide an interface to Misty&#39;s SLAM settings.&#34;&#34;&#34;
+
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def get_hazard_settings(self):
+        &#34;&#34;&#34;Obtain the current hazards system settings for Misty&#39;s time-of-flight and bump sensors.
+
+        Returns a dictionary with the following key-value pairs:
+
+        * `bumpSensors` (array): An array of objects that describe whether each bump sensor is
+          enabled or disabled. Each object in the bumpSensors array includes the following
+          key/value pairs:
+
+            - `enabled` (bool): Whether hazards are enabled for a sensor (`true`) or not (`false`).
+            - `sensorName` (str): The name of this bump sensor. May be one of
+
+                + `Bump_FrontRight`
+                + `Bump_FrontLeft`
+                + `Bump_RearRight`
+                + `Bump_RearLeft`
+
+        * `timeOfFlightSensors` (array): An array of objects that describe the distance
+          threshold that triggers a hazard response for each of Misty&#39;s time-of-flight
+          sensors. Includes the following key/value pairs:
+
+            - `sensorName` (str): The name of this time-of-flight sensor. One of the following:
+
+                + `TOF_Right`
+                + `TOF_Center`
+                + `TOF_Left`
+                + `TOF_Back`
+                + `TOF_DownFrontRight`
+                + `TOF_DownFrontRight`
+                + `TOF_DownFrontLeft`
+                + `TOF_DownBackRight`
+                + `TOF_DownBackLeft`
+
+            - `threshold` (double): The minimum distance (in meters) that triggers a hazard
+              state for this time-of-flight sensor. A threshold value of 0 means hazards
+              are disabled for this sensor.
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;hazards/settings&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_ir_exposure_and_gain(self):
+        &#34;&#34;&#34;Obtain the current exposure and gain settings for the infrared cameras in the
+        Occipital Structure Core depth sensor.
+
+        Returns a dictionary with the following key/value pairs:
+
+        * `exposure` (float): The current exposure levels for the infrared cameras in
+          the depth sensor (in seconds).
+        * `gain` (int): The current gain levels for the infrared cameras in the
+          depth sensor (in dB).
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;slam/settings/ir&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_navigation_diagnostics(self):
+        &#34;&#34;&#34;Obtain diagnostic information about Misty&#39;s navigation system.
+
+        Returns a stringified JSON object with diagnostic information about the current
+        status of Misty&#39;s SLAM system.
+
+        Notes
+        -----
+        The information in the data object for this command is primarily used by the Misty
+        Robotics engineering and support staff to troubleshoot and root-cause issues with
+        Misty&#39;s SLAM system. The contents of this data object are likely to change without
+        notice in future system updates.
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;slam/diagnostics&#39;
+        return self.wrapper_get(endpoint)
+
+    def get_slam_visible_exposure_and_gain(self):
+        &#34;&#34;&#34;Obtain the current exposure and gain settings for the fisheye camera in the
+        Occipital Structure Core depth sensor.
+
+        Returns a dictionary with the following key/value pairs:
+
+        * `exposure` (float): The current exposure levels for the infrared cameras in
+          the depth sensor (in seconds).
+        * `gain` (int): The current gain levels for the infrared cameras in the
+          depth sensor (in dB).
+
+        &#34;&#34;&#34;
+
+        endpoint = &#39;slam/settings/ir&#39;
+        return self.wrapper_get(endpoint)
+
+    def reset_slam(self):
+        &#34;&#34;&#34;Reset Misty&#39;s SLAM sensors.&#34;&#34;&#34;
+
+        endpoint = &#39;slam/reset&#39;
+        self.wrapper_post(endpoint)
+
+    def set_slam_ir_exposure_and_gain(self, exposure, gain):
+        &#34;&#34;&#34;Set the exposure and gain settings for the infrared cameras in the Occipital
+        Structure Core depth sensor.
+
+        ..IMPORTANT::
+          This can impact the performance of Misty&#39;s SLAM system. It is recommended to avoid
+          changing these settings.
+
+        Parameters
+        ----------
+        exposure: float
+            Exposure levels for the infrared cameras in the depth sensor (in seconds).
+            Should be a value between 0.001 and 0.033.
+        gain: int
+            Gain levels for the infrared cameras in the depth sensor (in dB). Should be
+            a value between 0 and 3.
+
+        Notes
+        -----
+        If this function is called when the SLAM system is not streaming, the camera
+        settings will not update. Use start_slam_streaming to begin streaming.
+
+        &#34;&#34;&#34;
+
+        if not 0.001 &lt;= exposure &lt;= 0.033:
+            raise ValueError(&#39;Invalid value for exposure, should be between 0.001 and 0.033.&#39;)
+        if not int(gain) == gain:
+            raise TypeError(&#39;Invalid type for gain argument, should be int.&#39;)
+        elif not 0 &lt;= gain &lt;= 3:
+            raise ValueError(&#39;Invalid value for gain, should be between 0 and 3.&#39;)
+
+        params = {&#39;Exposure&#39;: exposure, &#39;Gain&#39;: int(gain)}
+        endpoint = &#39;slam/settings/ir&#39;
+        self.wrapper_post(endpoint, params)
+
+    def set_slam_visible_exposure_and_gain(self, exposure, gain):
+        &#34;&#34;&#34;Set the exposure and gain settings for the fisheye camera in the Occipital
+        Structure Core depth sensor.
+
+        Parameters
+        ----------
+        exposure: float
+            Exposure levels for the fisheye camera in the depth sensor (in seconds).
+            Should be a value between 0.001 and 0.033.
+        gain: int
+            Gain levels for the fisheye camera in the depth sensor (in dB). Should be
+            a value between 1 and 8.
+
+        Notes
+        -----
+        If this function is called when the SLAM system is not streaming, the camera
+        settings will not update. Use start_slam_streaming to begin streaming.
+
+        &#34;&#34;&#34;
+
+        if not 0.001 &lt;= exposure &lt;= 0.033:
+            raise ValueError(&#39;Invalid value for exposure, should be between 0.001 and 0.033.&#39;)
+        if not int(gain) == gain:
+            raise TypeError(&#39;Invalid type for gain argument, should be int.&#39;)
+        elif not 0 &lt;= gain &lt;= 8:
+            raise ValueError(&#39;Invalid value for gain, should be between 0 and 8.&#39;)
+
+        params = {&#39;Exposure&#39;: exposure, &#39;Gain&#39;: int(gain)}
+        endpoint = &#39;slam/settings/visible&#39;
+        self.wrapper_post(endpoint, params)
+
+    def start_slam_streaming(self):
+        &#34;&#34;&#34;Open the data stream from the Occipital Structure Core depth sensor, so you can
+        obtain image and depth data when Misty is not actively tracking or mapping.
+
+        ..IMPORTANT:
+          Use the `stop_slam_streaming` function to close the depth sensor data stream after
+          using it. This turns off the laser in the depth sensor and lowers power consumption.
+
+        Notes
+        -----
+        Misty&#39;s 4K camera may not work while the depth sensor data stream is open.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/streaming/start&#39;
+        self.wrapper_post(endpoint)
+
+    def stop_slam_streaming(self):
+        &#34;&#34;&#34;Close the data stream from the Occipital Structure Core depth sensor.
+
+        ..IMPORTANT:
+          Always use this function after using `start_slam_streaming` or any functions that
+          use Misty&#39;s Occipital Structure Core depth sensor.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;slam/streaming/stop&#39;
+        self.wrapper_post(endpoint)
+
+    def update_hazard_settings(self,
+                               revert_to_default: bool = False,
+                               disable_time_of_flights: bool = False,
+                               disable_bump_sensors: bool = False,
+                               bump_sensors_enabled: list = None,
+                               time_of_flight_thresholds: list = None):
+        &#34;&#34;&#34;Change the hazard system settings for Misty&#39;s bump and time-of-flight sensors.
+
+        Enable or disable hazard triggers for all bump or time-of-flight sensors, or adjust
+        the hazard trigger settings for each sensor individually. See the documentation at
+        https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#updatehazardsettings
+        for the default values.
+
+        .. WARNING::
+           Misty cannot safely drive over ledges taller than 0.06 m. Navigating drops higher
+           than 0.06 meters can cause Misty to tip or fall and become damaged.
+
+        Parameters
+        ----------
+        revert_to_default: bool, default False
+            If `True`, sets Misty to use default hazard system settings. No efect if `False`.
+        disable_time_of_flights: bool, default False
+            If `True`, disables hazards for all time-of-flight sensors by setting their
+            `threshold` values to 0.
+        disable_bump_sensors: bool, default False
+            If `True`, disables hazards for all bump sensors.
+        bump_sensors_enabled: list of (sensor_name, enabled), default None
+            An unordered list of up to four tuples that you can use to turn hazards
+            on or off for each of Misty&#39;s bump sensors. It only needs to include tuples 
+            for the sensors that you want to adjust. Each tuple must include the
+            following values:
+
+            * `sensor_name` (`str`): The name of one of Misty&#39;s bump sensors. May be one of
+              `Bump_FrontRight`, `Bump_FrontLeft`, `Bump_RearRight` and `Bump_RearLeft`.
+            * `enabled` (`bool`): Whether hazards should be enabled for the corresponding
+              bump sensor (`True`) or not (`False`).
+
+        time_of_flight_thresholds: list of (sensor_name, threshold), default None
+            An unordered list of up to eight tuples that set the minimum distance threshold
+            to trigger a hazard state for each of Misty&#39;s TOF sensors. It only needs to
+            include tuples for the sensors you want to adjust. Each tuple must include the
+            following values.
+
+            * `sensor_name` (`str`): The name of one of Misty&#39;s time-of-flight sensors.
+              May be one of `TOF_DownFrontRight`, `TOF_DownFrontLeft`, `TOF_DownBackRight`,
+              `TOF_DownBackLeft`, `TOF_Right`, `TOF_Left`, `TOF_Center`, and `TOF_Back`.
+            * `threshold` (`double`): Minimum distance in meters that triggers a hazard
+               state for the corresponding TOF sensor. A threshold of 0 disables hazards.
+
+        Notes
+        -----
+        The settings for Misty&#39;s hazard system reset to default values every time the robot
+        boots up. This means changes applied with this function do not save across reboot cycles.
+
+        &#34;&#34;&#34;
+
+        if bump_sensors_enabled:
+            bump_sensors_enabled = [{&#39;sensorName&#39;: name, &#39;enabled&#39;: enabled} \
+                                    for name, enabled in bump_sensors_enabled]
+        if time_of_flight_thresholds:
+            time_of_flight_thresholds = [{&#39;sensorName&#39;: name, &#39;threshold&#39;: threshold} \
+                                         for name, threshold in time_of_flight_thresholds]
+
+        params = {
+            &#39;RevertToDefault&#39;: revert_to_default,
+            &#39;DisableTimeOfFlights&#39;: disable_time_of_flights,
+            &#39;BumpSensorsEnabled&#39;: bump_sensors_enabled,
+            &#39;TimeOfFlightThresholds&#39;: time_of_flight_thresholds,
+        }
+
+        headers = {&#39;Content-type&#39;: &#39;application/json&#39;}
+        endpoint = &#39;hazard/updatebasesettings&#39;
+        self.wrapper_post(endpoint, params=params, headers=headers)
+
+    def take_depth_picture(self):
+        &#34;&#34;&#34;Provide the current distance of objects from Misty&#39;s Occipital Structure Core depth sensor.
+
+        Returns a dictionary with a value for `image`, which contains an array of numerical
+        values which represent the distance in millimeters from the sensor for each pixel in
+        the captured image. The `image` array should be interpreted as a matrix of size
+        `height` x `width`, which are the other key/value pairs in the dictionary.
+
+        Notes
+        -----
+        Depending on the scene being viewed, the sensor may return a large proportion of
+        unknown values as `None`.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;cameras/depth&#39;
+        return self.wrapper_get(endpoint)
+
+    def take_fisheye_picture(self):
+        &#34;&#34;&#34;Take a picture using Misty&#39;s Occipital Structure Core depth sensor.
+
+        Returns the data for a 480 x 640 png image. This can be written to a file or be
+        further processed.
+
+        &#34;&#34;&#34;
+        endpoint = &#39;cameras/fisheye?Base64=true&#39;
+        data = self.wrapper_get(endpoint)
+        return base64.b64decode(data[&#39;base64&#39;])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings"><code class="name flex">
+<span>def <span class="ident">get_hazard_settings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain the current hazards system settings for Misty's time-of-flight and bump sensors.</p>
+<p>Returns a dictionary with the following key-value pairs:</p>
+<ul>
+<li>
+<p><code>bumpSensors</code> (array): An array of objects that describe whether each bump sensor is
+enabled or disabled. Each object in the bumpSensors array includes the following
+key/value pairs:</p>
+<ul>
+<li><code>enabled</code> (bool): Whether hazards are enabled for a sensor (<code>true</code>) or not (<code>false</code>).</li>
+<li>
+<p><code>sensorName</code> (str): The name of this bump sensor. May be one of</p>
+<ul>
+<li><code>Bump_FrontRight</code></li>
+<li><code>Bump_FrontLeft</code></li>
+<li><code>Bump_RearRight</code></li>
+<li><code>Bump_RearLeft</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>timeOfFlightSensors</code> (array): An array of objects that describe the distance
+threshold that triggers a hazard response for each of Misty's time-of-flight
+sensors. Includes the following key/value pairs:</p>
+<ul>
+<li>
+<p><code>sensorName</code> (str): The name of this time-of-flight sensor. One of the following:</p>
+<ul>
+<li><code>TOF_Right</code></li>
+<li><code>TOF_Center</code></li>
+<li><code>TOF_Left</code></li>
+<li><code>TOF_Back</code></li>
+<li><code>TOF_DownFrontRight</code></li>
+<li><code>TOF_DownFrontRight</code></li>
+<li><code>TOF_DownFrontLeft</code></li>
+<li><code>TOF_DownBackRight</code></li>
+<li><code>TOF_DownBackLeft</code></li>
+</ul>
+</li>
+<li>
+<p><code>threshold</code> (double): The minimum distance (in meters) that triggers a hazard
+state for this time-of-flight sensor. A threshold value of 0 means hazards
+are disabled for this sensor.</p>
+</li>
+</ul>
+</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_hazard_settings(self):
+    &#34;&#34;&#34;Obtain the current hazards system settings for Misty&#39;s time-of-flight and bump sensors.
+
+    Returns a dictionary with the following key-value pairs:
+
+    * `bumpSensors` (array): An array of objects that describe whether each bump sensor is
+      enabled or disabled. Each object in the bumpSensors array includes the following
+      key/value pairs:
+
+        - `enabled` (bool): Whether hazards are enabled for a sensor (`true`) or not (`false`).
+        - `sensorName` (str): The name of this bump sensor. May be one of
+
+            + `Bump_FrontRight`
+            + `Bump_FrontLeft`
+            + `Bump_RearRight`
+            + `Bump_RearLeft`
+
+    * `timeOfFlightSensors` (array): An array of objects that describe the distance
+      threshold that triggers a hazard response for each of Misty&#39;s time-of-flight
+      sensors. Includes the following key/value pairs:
+
+        - `sensorName` (str): The name of this time-of-flight sensor. One of the following:
+
+            + `TOF_Right`
+            + `TOF_Center`
+            + `TOF_Left`
+            + `TOF_Back`
+            + `TOF_DownFrontRight`
+            + `TOF_DownFrontRight`
+            + `TOF_DownFrontLeft`
+            + `TOF_DownBackRight`
+            + `TOF_DownBackLeft`
+
+        - `threshold` (double): The minimum distance (in meters) that triggers a hazard
+          state for this time-of-flight sensor. A threshold value of 0 means hazards
+          are disabled for this sensor.
+
+    &#34;&#34;&#34;
+
+    endpoint = &#39;hazards/settings&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain"><code class="name flex">
+<span>def <span class="ident">get_slam_ir_exposure_and_gain</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain the current exposure and gain settings for the infrared cameras in the
+Occipital Structure Core depth sensor.</p>
+<p>Returns a dictionary with the following key/value pairs:</p>
+<ul>
+<li><code>exposure</code> (float): The current exposure levels for the infrared cameras in
+the depth sensor (in seconds).</li>
+<li><code>gain</code> (int): The current gain levels for the infrared cameras in the
+depth sensor (in dB).</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_slam_ir_exposure_and_gain(self):
+    &#34;&#34;&#34;Obtain the current exposure and gain settings for the infrared cameras in the
+    Occipital Structure Core depth sensor.
+
+    Returns a dictionary with the following key/value pairs:
+
+    * `exposure` (float): The current exposure levels for the infrared cameras in
+      the depth sensor (in seconds).
+    * `gain` (int): The current gain levels for the infrared cameras in the
+      depth sensor (in dB).
+
+    &#34;&#34;&#34;
+
+    endpoint = &#39;slam/settings/ir&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics"><code class="name flex">
+<span>def <span class="ident">get_slam_navigation_diagnostics</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain diagnostic information about Misty's navigation system.</p>
+<p>Returns a stringified JSON object with diagnostic information about the current
+status of Misty's SLAM system.</p>
+<h2 id="notes">Notes</h2>
+<p>The information in the data object for this command is primarily used by the Misty
+Robotics engineering and support staff to troubleshoot and root-cause issues with
+Misty's SLAM system. The contents of this data object are likely to change without
+notice in future system updates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_slam_navigation_diagnostics(self):
+    &#34;&#34;&#34;Obtain diagnostic information about Misty&#39;s navigation system.
+
+    Returns a stringified JSON object with diagnostic information about the current
+    status of Misty&#39;s SLAM system.
+
+    Notes
+    -----
+    The information in the data object for this command is primarily used by the Misty
+    Robotics engineering and support staff to troubleshoot and root-cause issues with
+    Misty&#39;s SLAM system. The contents of this data object are likely to change without
+    notice in future system updates.
+
+    &#34;&#34;&#34;
+
+    endpoint = &#39;slam/diagnostics&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain"><code class="name flex">
+<span>def <span class="ident">get_slam_visible_exposure_and_gain</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain the current exposure and gain settings for the fisheye camera in the
+Occipital Structure Core depth sensor.</p>
+<p>Returns a dictionary with the following key/value pairs:</p>
+<ul>
+<li><code>exposure</code> (float): The current exposure levels for the infrared cameras in
+the depth sensor (in seconds).</li>
+<li><code>gain</code> (int): The current gain levels for the infrared cameras in the
+depth sensor (in dB).</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_slam_visible_exposure_and_gain(self):
+    &#34;&#34;&#34;Obtain the current exposure and gain settings for the fisheye camera in the
+    Occipital Structure Core depth sensor.
+
+    Returns a dictionary with the following key/value pairs:
+
+    * `exposure` (float): The current exposure levels for the infrared cameras in
+      the depth sensor (in seconds).
+    * `gain` (int): The current gain levels for the infrared cameras in the
+      depth sensor (in dB).
+
+    &#34;&#34;&#34;
+
+    endpoint = &#39;slam/settings/ir&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam"><code class="name flex">
+<span>def <span class="ident">reset_slam</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reset Misty's SLAM sensors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset_slam(self):
+    &#34;&#34;&#34;Reset Misty&#39;s SLAM sensors.&#34;&#34;&#34;
+
+    endpoint = &#39;slam/reset&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain"><code class="name flex">
+<span>def <span class="ident">set_slam_ir_exposure_and_gain</span></span>(<span>self, exposure, gain)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the exposure and gain settings for the infrared cameras in the Occipital
+Structure Core depth sensor.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This can impact the performance of Misty's SLAM system. It is recommended to avoid
+changing these settings.</p>
+</div>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>exposure</code></strong> :&ensp;<code>float</code></dt>
+<dd>Exposure levels for the infrared cameras in the depth sensor (in seconds).
+Should be a value between 0.001 and 0.033.</dd>
+<dt><strong><code>gain</code></strong> :&ensp;<code>int</code></dt>
+<dd>Gain levels for the infrared cameras in the depth sensor (in dB). Should be
+a value between 0 and 3.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>If this function is called when the SLAM system is not streaming, the camera
+settings will not update. Use start_slam_streaming to begin streaming.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_slam_ir_exposure_and_gain(self, exposure, gain):
+    &#34;&#34;&#34;Set the exposure and gain settings for the infrared cameras in the Occipital
+    Structure Core depth sensor.
+
+    ..IMPORTANT::
+      This can impact the performance of Misty&#39;s SLAM system. It is recommended to avoid
+      changing these settings.
+
+    Parameters
+    ----------
+    exposure: float
+        Exposure levels for the infrared cameras in the depth sensor (in seconds).
+        Should be a value between 0.001 and 0.033.
+    gain: int
+        Gain levels for the infrared cameras in the depth sensor (in dB). Should be
+        a value between 0 and 3.
+
+    Notes
+    -----
+    If this function is called when the SLAM system is not streaming, the camera
+    settings will not update. Use start_slam_streaming to begin streaming.
+
+    &#34;&#34;&#34;
+
+    if not 0.001 &lt;= exposure &lt;= 0.033:
+        raise ValueError(&#39;Invalid value for exposure, should be between 0.001 and 0.033.&#39;)
+    if not int(gain) == gain:
+        raise TypeError(&#39;Invalid type for gain argument, should be int.&#39;)
+    elif not 0 &lt;= gain &lt;= 3:
+        raise ValueError(&#39;Invalid value for gain, should be between 0 and 3.&#39;)
+
+    params = {&#39;Exposure&#39;: exposure, &#39;Gain&#39;: int(gain)}
+    endpoint = &#39;slam/settings/ir&#39;
+    self.wrapper_post(endpoint, params)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain"><code class="name flex">
+<span>def <span class="ident">set_slam_visible_exposure_and_gain</span></span>(<span>self, exposure, gain)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the exposure and gain settings for the fisheye camera in the Occipital
+Structure Core depth sensor.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>exposure</code></strong> :&ensp;<code>float</code></dt>
+<dd>Exposure levels for the fisheye camera in the depth sensor (in seconds).
+Should be a value between 0.001 and 0.033.</dd>
+<dt><strong><code>gain</code></strong> :&ensp;<code>int</code></dt>
+<dd>Gain levels for the fisheye camera in the depth sensor (in dB). Should be
+a value between 1 and 8.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>If this function is called when the SLAM system is not streaming, the camera
+settings will not update. Use start_slam_streaming to begin streaming.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_slam_visible_exposure_and_gain(self, exposure, gain):
+    &#34;&#34;&#34;Set the exposure and gain settings for the fisheye camera in the Occipital
+    Structure Core depth sensor.
+
+    Parameters
+    ----------
+    exposure: float
+        Exposure levels for the fisheye camera in the depth sensor (in seconds).
+        Should be a value between 0.001 and 0.033.
+    gain: int
+        Gain levels for the fisheye camera in the depth sensor (in dB). Should be
+        a value between 1 and 8.
+
+    Notes
+    -----
+    If this function is called when the SLAM system is not streaming, the camera
+    settings will not update. Use start_slam_streaming to begin streaming.
+
+    &#34;&#34;&#34;
+
+    if not 0.001 &lt;= exposure &lt;= 0.033:
+        raise ValueError(&#39;Invalid value for exposure, should be between 0.001 and 0.033.&#39;)
+    if not int(gain) == gain:
+        raise TypeError(&#39;Invalid type for gain argument, should be int.&#39;)
+    elif not 0 &lt;= gain &lt;= 8:
+        raise ValueError(&#39;Invalid value for gain, should be between 0 and 8.&#39;)
+
+    params = {&#39;Exposure&#39;: exposure, &#39;Gain&#39;: int(gain)}
+    endpoint = &#39;slam/settings/visible&#39;
+    self.wrapper_post(endpoint, params)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming"><code class="name flex">
+<span>def <span class="ident">start_slam_streaming</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Open the data stream from the Occipital Structure Core depth sensor, so you can
+obtain image and depth data when Misty is not actively tracking or mapping.</p>
+<p>..IMPORTANT:
+Use the <code>stop_slam_streaming</code> function to close the depth sensor data stream after
+using it. This turns off the laser in the depth sensor and lowers power consumption.</p>
+<h2 id="notes">Notes</h2>
+<p>Misty's 4K camera may not work while the depth sensor data stream is open.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start_slam_streaming(self):
+    &#34;&#34;&#34;Open the data stream from the Occipital Structure Core depth sensor, so you can
+    obtain image and depth data when Misty is not actively tracking or mapping.
+
+    ..IMPORTANT:
+      Use the `stop_slam_streaming` function to close the depth sensor data stream after
+      using it. This turns off the laser in the depth sensor and lowers power consumption.
+
+    Notes
+    -----
+    Misty&#39;s 4K camera may not work while the depth sensor data stream is open.
+
+    &#34;&#34;&#34;
+    endpoint = &#39;slam/streaming/start&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming"><code class="name flex">
+<span>def <span class="ident">stop_slam_streaming</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Close the data stream from the Occipital Structure Core depth sensor.</p>
+<p>..IMPORTANT:
+Always use this function after using <code>start_slam_streaming</code> or any functions that
+use Misty's Occipital Structure Core depth sensor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_slam_streaming(self):
+    &#34;&#34;&#34;Close the data stream from the Occipital Structure Core depth sensor.
+
+    ..IMPORTANT:
+      Always use this function after using `start_slam_streaming` or any functions that
+      use Misty&#39;s Occipital Structure Core depth sensor.
+
+    &#34;&#34;&#34;
+    endpoint = &#39;slam/streaming/stop&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture"><code class="name flex">
+<span>def <span class="ident">take_depth_picture</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide the current distance of objects from Misty's Occipital Structure Core depth sensor.</p>
+<p>Returns a dictionary with a value for <code>image</code>, which contains an array of numerical
+values which represent the distance in millimeters from the sensor for each pixel in
+the captured image. The <code>image</code> array should be interpreted as a matrix of size
+<code>height</code> x <code>width</code>, which are the other key/value pairs in the dictionary.</p>
+<h2 id="notes">Notes</h2>
+<p>Depending on the scene being viewed, the sensor may return a large proportion of
+unknown values as <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def take_depth_picture(self):
+    &#34;&#34;&#34;Provide the current distance of objects from Misty&#39;s Occipital Structure Core depth sensor.
+
+    Returns a dictionary with a value for `image`, which contains an array of numerical
+    values which represent the distance in millimeters from the sensor for each pixel in
+    the captured image. The `image` array should be interpreted as a matrix of size
+    `height` x `width`, which are the other key/value pairs in the dictionary.
+
+    Notes
+    -----
+    Depending on the scene being viewed, the sensor may return a large proportion of
+    unknown values as `None`.
+
+    &#34;&#34;&#34;
+    endpoint = &#39;cameras/depth&#39;
+    return self.wrapper_get(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture"><code class="name flex">
+<span>def <span class="ident">take_fisheye_picture</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Take a picture using Misty's Occipital Structure Core depth sensor.</p>
+<p>Returns the data for a 480 x 640 png image. This can be written to a file or be
+further processed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def take_fisheye_picture(self):
+    &#34;&#34;&#34;Take a picture using Misty&#39;s Occipital Structure Core depth sensor.
+
+    Returns the data for a 480 x 640 png image. This can be written to a file or be
+    further processed.
+
+    &#34;&#34;&#34;
+    endpoint = &#39;cameras/fisheye?Base64=true&#39;
+    data = self.wrapper_get(endpoint)
+    return base64.b64decode(data[&#39;base64&#39;])</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings"><code class="name flex">
+<span>def <span class="ident">update_hazard_settings</span></span>(<span>self, revert_to_default: bool = False, disable_time_of_flights: bool = False, disable_bump_sensors: bool = False, bump_sensors_enabled: list = None, time_of_flight_thresholds: list = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change the hazard system settings for Misty's bump and time-of-flight sensors.</p>
+<p>Enable or disable hazard triggers for all bump or time-of-flight sensors, or adjust
+the hazard trigger settings for each sensor individually. See the documentation at
+<a href="https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#updatehazardsettings">https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#updatehazardsettings</a>
+for the default values.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Misty cannot safely drive over ledges taller than 0.06 m. Navigating drops higher
+than 0.06 meters can cause Misty to tip or fall and become damaged.</p>
+</div>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>revert_to_default</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
+<dd>If <code>True</code>, sets Misty to use default hazard system settings. No efect if <code>False</code>.</dd>
+<dt><strong><code>disable_time_of_flights</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
+<dd>If <code>True</code>, disables hazards for all time-of-flight sensors by setting their
+<code>threshold</code> values to 0.</dd>
+<dt><strong><code>disable_bump_sensors</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
+<dd>If <code>True</code>, disables hazards for all bump sensors.</dd>
+<dt><strong><code>bump_sensors_enabled</code></strong> :&ensp;<code>list</code> of <code>(sensor_name, enabled)</code>, default <code>None</code></dt>
+<dd>
+<p>An unordered list of up to four tuples that you can use to turn hazards
+on or off for each of Misty's bump sensors. It only needs to include tuples
+for the sensors that you want to adjust. Each tuple must include the
+following values:</p>
+<ul>
+<li><code>sensor_name</code> (<code>str</code>): The name of one of Misty's bump sensors. May be one of
+<code>Bump_FrontRight</code>, <code>Bump_FrontLeft</code>, <code>Bump_RearRight</code> and <code>Bump_RearLeft</code>.</li>
+<li><code>enabled</code> (<code>bool</code>): Whether hazards should be enabled for the corresponding
+bump sensor (<code>True</code>) or not (<code>False</code>).</li>
+</ul>
+</dd>
+<dt><strong><code>time_of_flight_thresholds</code></strong> :&ensp;<code>list</code> of <code>(sensor_name, threshold)</code>, default <code>None</code></dt>
+<dd>
+<p>An unordered list of up to eight tuples that set the minimum distance threshold
+to trigger a hazard state for each of Misty's TOF sensors. It only needs to
+include tuples for the sensors you want to adjust. Each tuple must include the
+following values.</p>
+<ul>
+<li><code>sensor_name</code> (<code>str</code>): The name of one of Misty's time-of-flight sensors.
+May be one of <code>TOF_DownFrontRight</code>, <code>TOF_DownFrontLeft</code>, <code>TOF_DownBackRight</code>,
+<code>TOF_DownBackLeft</code>, <code>TOF_Right</code>, <code>TOF_Left</code>, <code>TOF_Center</code>, and <code>TOF_Back</code>.</li>
+<li><code>threshold</code> (<code>double</code>): Minimum distance in meters that triggers a hazard
+state for the corresponding TOF sensor. A threshold of 0 disables hazards.</li>
+</ul>
+</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>The settings for Misty's hazard system reset to default values every time the robot
+boots up. This means changes applied with this function do not save across reboot cycles.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_hazard_settings(self,
+                           revert_to_default: bool = False,
+                           disable_time_of_flights: bool = False,
+                           disable_bump_sensors: bool = False,
+                           bump_sensors_enabled: list = None,
+                           time_of_flight_thresholds: list = None):
+    &#34;&#34;&#34;Change the hazard system settings for Misty&#39;s bump and time-of-flight sensors.
+
+    Enable or disable hazard triggers for all bump or time-of-flight sensors, or adjust
+    the hazard trigger settings for each sensor individually. See the documentation at
+    https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#updatehazardsettings
+    for the default values.
+
+    .. WARNING::
+       Misty cannot safely drive over ledges taller than 0.06 m. Navigating drops higher
+       than 0.06 meters can cause Misty to tip or fall and become damaged.
+
+    Parameters
+    ----------
+    revert_to_default: bool, default False
+        If `True`, sets Misty to use default hazard system settings. No efect if `False`.
+    disable_time_of_flights: bool, default False
+        If `True`, disables hazards for all time-of-flight sensors by setting their
+        `threshold` values to 0.
+    disable_bump_sensors: bool, default False
+        If `True`, disables hazards for all bump sensors.
+    bump_sensors_enabled: list of (sensor_name, enabled), default None
+        An unordered list of up to four tuples that you can use to turn hazards
+        on or off for each of Misty&#39;s bump sensors. It only needs to include tuples 
+        for the sensors that you want to adjust. Each tuple must include the
+        following values:
+
+        * `sensor_name` (`str`): The name of one of Misty&#39;s bump sensors. May be one of
+          `Bump_FrontRight`, `Bump_FrontLeft`, `Bump_RearRight` and `Bump_RearLeft`.
+        * `enabled` (`bool`): Whether hazards should be enabled for the corresponding
+          bump sensor (`True`) or not (`False`).
+
+    time_of_flight_thresholds: list of (sensor_name, threshold), default None
+        An unordered list of up to eight tuples that set the minimum distance threshold
+        to trigger a hazard state for each of Misty&#39;s TOF sensors. It only needs to
+        include tuples for the sensors you want to adjust. Each tuple must include the
+        following values.
+
+        * `sensor_name` (`str`): The name of one of Misty&#39;s time-of-flight sensors.
+          May be one of `TOF_DownFrontRight`, `TOF_DownFrontLeft`, `TOF_DownBackRight`,
+          `TOF_DownBackLeft`, `TOF_Right`, `TOF_Left`, `TOF_Center`, and `TOF_Back`.
+        * `threshold` (`double`): Minimum distance in meters that triggers a hazard
+           state for the corresponding TOF sensor. A threshold of 0 disables hazards.
+
+    Notes
+    -----
+    The settings for Misty&#39;s hazard system reset to default values every time the robot
+    boots up. This means changes applied with this function do not save across reboot cycles.
+
+    &#34;&#34;&#34;
+
+    if bump_sensors_enabled:
+        bump_sensors_enabled = [{&#39;sensorName&#39;: name, &#39;enabled&#39;: enabled} \
+                                for name, enabled in bump_sensors_enabled]
+    if time_of_flight_thresholds:
+        time_of_flight_thresholds = [{&#39;sensorName&#39;: name, &#39;threshold&#39;: threshold} \
+                                     for name, threshold in time_of_flight_thresholds]
+
+    params = {
+        &#39;RevertToDefault&#39;: revert_to_default,
+        &#39;DisableTimeOfFlights&#39;: disable_time_of_flights,
+        &#39;BumpSensorsEnabled&#39;: bump_sensors_enabled,
+        &#39;TimeOfFlightThresholds&#39;: time_of_flight_thresholds,
+    }
+
+    headers = {&#39;Content-type&#39;: &#39;application/json&#39;}
+    endpoint = &#39;hazard/updatebasesettings&#39;
+    self.wrapper_post(endpoint, params=params, headers=headers)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="misty-py-wrapper.navigation.TrackingMixin"><code class="flex name class">
+<span>class <span class="ident">TrackingMixin</span></span>
+<span>(</span><span>ip)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide an interface for Misty's tracking functions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TrackingMixin(ApiWrapperMixin):
+    &#34;&#34;&#34;Provide an interface for Misty&#39;s tracking functions.
+
+    &#34;&#34;&#34;
+    def __init__(self, ip):
+        super().__init__(ip)
+
+    def drive_to_location(self, x: int, y: int):
+        &#34;&#34;&#34;Drives to provided destination at (x, y).
+
+        ..IMPORTANT::
+          Use `start_tracking` before calling this function
+          to have Misty start tracking the location, and use `stop_tracking`
+          to stop tracking after arriving to the destination.
+
+        Parameters
+        ----------
+        x: int
+            X coordinate for the cell in the occupancy grid to drive to.
+            In the occupancy grid, the X coordinate represents the
+            index of the array that contains the desired cell.
+        y: int
+            Y coordinate for the cell in the occupancy grid to drive to.
+            In the occupancy grid, the Y coordinate represents the
+            index of the desired cell, within its corresponding array in
+            the occupancy grid.
+        &#34;&#34;&#34;
+        dest = f&#39;{x}:{y}&#39;
+        endpoint = &#39;drive/coordinates&#39;
+        params = {&#39;Destination&#39;: dest}
+        self.wrapper_post(endpoint, params)
+
+    def follow_path(self, path: list, velocity: float = 0.5,
+                    full_spin_duration: float = 15, 
+                    waypoint_accuracy: float = 0.1,
+                    rotate_threshold: float = 10):
+        &#34;&#34;&#34;Drives Misty on the path defined by a list of given coordinates.
+
+        ..IMPORTANT:
+          Use `start_tracking` before calling this function to have
+          Misty start tracking the location. Misty will not be able to
+          follow a path if there are unmapped obstacles in the way.
+
+        Parameters
+        ----------
+        path: list of [x, y] pairs
+           A list of coordinate pairs, each of which represents a waypoint
+           on Misty&#39;s path.
+        velocity: float, default 0.5
+            A fraction of Misty&#39;s maximum velocity (should be between 0 and
+            1 exclusive). Determines how fast Misty drives in a straight line.
+        full_spin_duration: float, default 15
+            Duration in seconds it takes for Misty to complete a 360 degree
+            spin; determines how fast Misty spins or pivots.
+        waypoint_accuracy: float, default 0.1
+            How close in meters Misty gets to a waypoint before considering
+            itself to have reached it.
+        rotate_threshold: float, default 10
+            When Misty&#39;s bearing relative to the next waypoint (in degrees)
+            is larger than the threshold, the robot pivots until it becomes
+            lower than the threshold.
+        &#34;&#34;&#34;
+        if not 0 &lt; velocity &lt; 1:
+            raise ValueError(&#39;Invalid value for velocity, should be between 0 and 1.&#39;)
+        if waypoint_accuracy &lt;= 0:
+            raise ValueError(&#39;Invalid value for waypoint_accuracy, should be&#39;
+                             + &#39;greater than 0&#39;)
+        if not 0 &lt;= rotate_threshold &lt;= 360:
+            raise ValueError(&#39;Invalid value for rotate_threshold, should be&#39;
+                             + &#39;between 0 and 360&#39;)
+
+        path_coords = [f&#39;{x}:{y}&#39; for x, y in path]
+        strpath = &#39;,&#39;.join(path_coords)
+
+        endpoint = &#39;drive/path&#39;
+        params = {
+            &#39;Path&#39;: strpath,
+            &#39;Velocity&#39;: velocity,
+            &#39;FullSpinDuration&#39;: full_spin_duration,
+            &#39;WaypointAccuracy&#39;: waypoint_accuracy,
+            &#39;RotateThreshold&#39;: rotate_threshold,
+        }
+        self.wrapper_post(endpoint, params)
+
+
+    def start_tracking(self):
+        &#34;&#34;&#34;Make Misty start tracking its location.&#34;&#34;&#34;
+        endpoint = &#39;slam/track/start&#39;
+        self.wrapper_post(endpoint)
+
+
+    def stop_tracking(self):
+        &#34;&#34;&#34;Make Misty stop tracking its location.&#34;&#34;&#34;
+        endpoint = &#39;slam/track/stop&#39;
+        self.wrapper_post(endpoint)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="misty-py-wrapper.navigation.TrackingMixin.drive_to_location"><code class="name flex">
+<span>def <span class="ident">drive_to_location</span></span>(<span>self, x: int, y: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Drives to provided destination at (x, y).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Use <code>start_tracking</code> before calling this function
+to have Misty start tracking the location, and use <code>stop_tracking</code>
+to stop tracking after arriving to the destination.</p>
+</div>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>X coordinate for the cell in the occupancy grid to drive to.
+In the occupancy grid, the X coordinate represents the
+index of the array that contains the desired cell.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Y coordinate for the cell in the occupancy grid to drive to.
+In the occupancy grid, the Y coordinate represents the
+index of the desired cell, within its corresponding array in
+the occupancy grid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def drive_to_location(self, x: int, y: int):
+    &#34;&#34;&#34;Drives to provided destination at (x, y).
+
+    ..IMPORTANT::
+      Use `start_tracking` before calling this function
+      to have Misty start tracking the location, and use `stop_tracking`
+      to stop tracking after arriving to the destination.
+
+    Parameters
+    ----------
+    x: int
+        X coordinate for the cell in the occupancy grid to drive to.
+        In the occupancy grid, the X coordinate represents the
+        index of the array that contains the desired cell.
+    y: int
+        Y coordinate for the cell in the occupancy grid to drive to.
+        In the occupancy grid, the Y coordinate represents the
+        index of the desired cell, within its corresponding array in
+        the occupancy grid.
+    &#34;&#34;&#34;
+    dest = f&#39;{x}:{y}&#39;
+    endpoint = &#39;drive/coordinates&#39;
+    params = {&#39;Destination&#39;: dest}
+    self.wrapper_post(endpoint, params)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.TrackingMixin.follow_path"><code class="name flex">
+<span>def <span class="ident">follow_path</span></span>(<span>self, path: list, velocity: float = 0.5, full_spin_duration: float = 15, waypoint_accuracy: float = 0.1, rotate_threshold: float = 10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Drives Misty on the path defined by a list of given coordinates.</p>
+<p>..IMPORTANT:
+Use <code>start_tracking</code> before calling this function to have
+Misty start tracking the location. Misty will not be able to
+follow a path if there are unmapped obstacles in the way.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>list</code> of <code>[x, y] pairs</code></dt>
+<dd>&nbsp;</dd>
+<dt>A list of coordinate pairs, each of which represents a waypoint</dt>
+<dt>on Misty's path.</dt>
+<dt><strong><code>velocity</code></strong> :&ensp;<code>float</code>, default <code>0.5</code></dt>
+<dd>A fraction of Misty's maximum velocity (should be between 0 and
+1 exclusive). Determines how fast Misty drives in a straight line.</dd>
+<dt><strong><code>full_spin_duration</code></strong> :&ensp;<code>float</code>, default <code>15</code></dt>
+<dd>Duration in seconds it takes for Misty to complete a 360 degree
+spin; determines how fast Misty spins or pivots.</dd>
+<dt><strong><code>waypoint_accuracy</code></strong> :&ensp;<code>float</code>, default <code>0.1</code></dt>
+<dd>How close in meters Misty gets to a waypoint before considering
+itself to have reached it.</dd>
+<dt><strong><code>rotate_threshold</code></strong> :&ensp;<code>float</code>, default <code>10</code></dt>
+<dd>When Misty's bearing relative to the next waypoint (in degrees)
+is larger than the threshold, the robot pivots until it becomes
+lower than the threshold.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def follow_path(self, path: list, velocity: float = 0.5,
+                full_spin_duration: float = 15, 
+                waypoint_accuracy: float = 0.1,
+                rotate_threshold: float = 10):
+    &#34;&#34;&#34;Drives Misty on the path defined by a list of given coordinates.
+
+    ..IMPORTANT:
+      Use `start_tracking` before calling this function to have
+      Misty start tracking the location. Misty will not be able to
+      follow a path if there are unmapped obstacles in the way.
+
+    Parameters
+    ----------
+    path: list of [x, y] pairs
+       A list of coordinate pairs, each of which represents a waypoint
+       on Misty&#39;s path.
+    velocity: float, default 0.5
+        A fraction of Misty&#39;s maximum velocity (should be between 0 and
+        1 exclusive). Determines how fast Misty drives in a straight line.
+    full_spin_duration: float, default 15
+        Duration in seconds it takes for Misty to complete a 360 degree
+        spin; determines how fast Misty spins or pivots.
+    waypoint_accuracy: float, default 0.1
+        How close in meters Misty gets to a waypoint before considering
+        itself to have reached it.
+    rotate_threshold: float, default 10
+        When Misty&#39;s bearing relative to the next waypoint (in degrees)
+        is larger than the threshold, the robot pivots until it becomes
+        lower than the threshold.
+    &#34;&#34;&#34;
+    if not 0 &lt; velocity &lt; 1:
+        raise ValueError(&#39;Invalid value for velocity, should be between 0 and 1.&#39;)
+    if waypoint_accuracy &lt;= 0:
+        raise ValueError(&#39;Invalid value for waypoint_accuracy, should be&#39;
+                         + &#39;greater than 0&#39;)
+    if not 0 &lt;= rotate_threshold &lt;= 360:
+        raise ValueError(&#39;Invalid value for rotate_threshold, should be&#39;
+                         + &#39;between 0 and 360&#39;)
+
+    path_coords = [f&#39;{x}:{y}&#39; for x, y in path]
+    strpath = &#39;,&#39;.join(path_coords)
+
+    endpoint = &#39;drive/path&#39;
+    params = {
+        &#39;Path&#39;: strpath,
+        &#39;Velocity&#39;: velocity,
+        &#39;FullSpinDuration&#39;: full_spin_duration,
+        &#39;WaypointAccuracy&#39;: waypoint_accuracy,
+        &#39;RotateThreshold&#39;: rotate_threshold,
+    }
+    self.wrapper_post(endpoint, params)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.TrackingMixin.start_tracking"><code class="name flex">
+<span>def <span class="ident">start_tracking</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Make Misty start tracking its location.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start_tracking(self):
+    &#34;&#34;&#34;Make Misty start tracking its location.&#34;&#34;&#34;
+    endpoint = &#39;slam/track/start&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.navigation.TrackingMixin.stop_tracking"><code class="name flex">
+<span>def <span class="ident">stop_tracking</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Make Misty stop tracking its location.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_tracking(self):
+    &#34;&#34;&#34;Make Misty stop tracking its location.&#34;&#34;&#34;
+    endpoint = &#39;slam/track/stop&#39;
+    self.wrapper_post(endpoint)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
+<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="misty-py-wrapper" href="index.html">misty-py-wrapper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="misty-py-wrapper.navigation.MappingMixin" href="#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></code></h4>
+<ul class="">
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.delete_slam_map" href="#misty-py-wrapper.navigation.MappingMixin.delete_slam_map">delete_slam_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_current_slam_map" href="#misty-py-wrapper.navigation.MappingMixin.get_current_slam_map">get_current_slam_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_map" href="#misty-py-wrapper.navigation.MappingMixin.get_map">get_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_slam_maps" href="#misty-py-wrapper.navigation.MappingMixin.get_slam_maps">get_slam_maps</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.rename_slam_map" href="#misty-py-wrapper.navigation.MappingMixin.rename_slam_map">rename_slam_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.start_mapping" href="#misty-py-wrapper.navigation.MappingMixin.start_mapping">start_mapping</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.stop_mapping" href="#misty-py-wrapper.navigation.MappingMixin.stop_mapping">stop_mapping</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></code></h4>
+<ul class="">
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings">get_hazard_settings</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain">get_slam_ir_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics">get_slam_navigation_diagnostics</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain">get_slam_visible_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam" href="#misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam">reset_slam</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain">set_slam_ir_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain">set_slam_visible_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming" href="#misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming">start_slam_streaming</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming" href="#misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming">stop_slam_streaming</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture" href="#misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture">take_depth_picture</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture" href="#misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture">take_fisheye_picture</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings" href="#misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings">update_hazard_settings</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="misty-py-wrapper.navigation.TrackingMixin" href="#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></code></h4>
+<ul class="">
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.drive_to_location" href="#misty-py-wrapper.navigation.TrackingMixin.drive_to_location">drive_to_location</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.follow_path" href="#misty-py-wrapper.navigation.TrackingMixin.follow_path">follow_path</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.start_tracking" href="#misty-py-wrapper.navigation.TrackingMixin.start_tracking">start_tracking</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.stop_tracking" href="#misty-py-wrapper.navigation.TrackingMixin.stop_tracking">stop_tracking</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
