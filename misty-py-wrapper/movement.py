@@ -9,7 +9,7 @@ or have as attributes the `ActuatorMixin` and `Arm` objects.
 The `DrivingMixin`, which the `Robot` class inherits from, provides driving functions.
 """
 
-from .api_wrappers import ApiWrapperMixin
+from api_wrappers import ApiWrapperMixin
 from math import radians
 
 class ActuatorMixin(ApiWrapperMixin):
