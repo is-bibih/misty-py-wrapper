@@ -115,6 +115,7 @@ class WebSocketStream:
     def async_wrapper(func):
         def async_func(*args, **kwargs):
             return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+            #return asyncio.run(func(*args, **kwargs))
         return async_func
 
     @async_wrapper
@@ -152,5 +153,5 @@ class WebSocketStream:
         if not self.websocket:
             raise Exception(f'No active WebSocket subscription for {self.event_name}')
         msg = await self.websocket.recv()
-        return json.loads(msg)
+        return json.loads(msg)['message']
 

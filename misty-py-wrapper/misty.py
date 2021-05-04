@@ -48,6 +48,26 @@ class Robot(NavigationMixin, DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMi
         Misty sends event messages each time the hazard system detects a change to a
         hazard state. You can subscribe to these events to be
         notified when Misty enters or exits a specific hazard state.
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to hazard notification events.
+        hazard_type: list of str, default None
+            List with hazard event types to subscribe to. May be one of the
+            following (check Misty documentation at
+            https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#hazardnotification
+            for details):
+
+            - `bumpSensorsHazardState`
+            - `criticalInternalError`
+            - `driveStopped`
+            - `timeOfFlightSensorsHazardState`
+            - `excessiveSpeedHazard`
+
+            If no hazard event types are passed, the event subscription returns
+            information from all types.
+
         """
 
         hazards = ['bumpSensorsHazardState', 'criticalInternalError', 'driveStopped'
@@ -72,8 +92,66 @@ class Robot(NavigationMixin, DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMi
                           for hazard in exclude_hazards]
         self.add_websocket('HazardNotification', event_name, conditions=conditions, **kwargs)
 
+    def add_imu(self, event_name, **kwargs):
+        """Provide  information from Misty's IMU sensor.
+
+        This WebSocket stream includes information about:
+
+        - the pitch, yaw, and roll orientation angles of the sensor (in degrees)
+        - the force (in meters per second) currently applied to the sensor along
+          its pitch, yaw, and roll rotational axes
+        - the force (in meters per second squared) currently applied to the
+          sensor along its X, Y, and Z axes
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to the IMU sensor data stream.
+
+        Notes
+        -----
+        Whenever Misty boots up or resets the real-time controller, the IMU
+        defines that position to be a heading of 0 degrees. The IMU is located
+        in Misty's torso, so the relative position of Misty's head does not
+        change readings.
+
+        By default, Misty sends IMU events every five seconds. Pass a `debounce`
+        keyword argument with a different value (in ms) to change it.
+
+        """
+        self.add_websocket('IMU', event_name, **kwargs)
+
+    def add_slam_status(self, event_name, **kwargs):
+        """Provide information about the SLAM system's status.
+
+        It returns a dictionary with `status`, `statusList`, `runMode`, and
+        `sensorStatus`.
+
+        - `status`: an integer which, when converted to binary, represents whether
+          each status code for the SLAM system is on (1) or off (0)
+        - `statusList`: a list of the status codes which are in the 'on' state
+        - `runMode`: represents which task the navigation system is currently
+          carrying out (tracking, exploring, etc.)
+        - `sensorStatus`: describes the status of the depth sensor
+
+        See the Misty documentation for details:
+        https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#slamstatus
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to the IMU sensor data stream.
+
+        Notes
+        -----
+        It is recommended to only use returned `SensorStatus` and `RunMode` as
+        supplemental information if coding SLAM functionality, and focus on 
+        `Status` and `StatusList`.
+        """
+        self.add_websocket('SlamStatus', event_name, **kwargs)
+
     def text_to_speech(self, msg: str, lang: str = 'es',
-                       file_name: str = 'temp.mp3',
+                           file_name: str = 'temp.mp3',
                        delete_after: bool = True, **kwargs):
         """Generate speech audio from text and play it in Misty."""
         file_obj = BytesIO()
