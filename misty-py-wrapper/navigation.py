@@ -5,7 +5,7 @@ https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#navigation
 """
 
 import base64
-from .api_wrappers import ApiWrapperMixin
+from api_wrappers import ApiWrapperMixin
 
 class MappingMixin(ApiWrapperMixin):
     """Provide an interface for Misty's mapping functions.

@@ -29,22 +29,22 @@ class ApiWrapperMixin:
             Parameters
             ----------
             event_type: str
-                        Misty event type (see API documentation)  
+                        Misty event type (see API documentation)
             event_name: str
-                        Unique identifier for connection  
+                        Unique identifier for connection
             debounce: int
-                      How frequently (in ms) new event data should be sent  
+                      How frequently (in ms) new event data should be sent
             return_property: str, default None
-                             Property to restrict received events to (supports dot notation; e. g. "MentalState.Affect.Valence"); no restrictions if None  
+                             Property to restrict received events to (supports dot notation; e. g. "MentalState.Affect.Valence"); no restrictions if None
             conditions: iterable of tuples, default None
-                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None  
+                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None
 
-                        Property: str  
-                            Event property to check (see API documentation)  
-                        Inequality: str  
-                            Comparison operator; can be '=>', '==', '!=','>', '<', 'exists', 'empty', or 'delta'  
-                        Value: str  
-                            Value to check against  
+                        Property: str
+                            Event prperty to check (see API documentation)
+                        Inequality: str
+                            Comparison operator; can be '=>', '==', '!=','>', '<', 'exists', 'empty', or 'delta'
+                        Value: str
+                            Value to check against
         """
         ws = WebSocketStream(
             self.api_uri,
@@ -115,6 +115,7 @@ class WebSocketStream:
     def async_wrapper(func):
         def async_func(*args, **kwargs):
             return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+            #return asyncio.run(func(*args, **kwargs))
         return async_func
 
     @async_wrapper
@@ -152,5 +153,5 @@ class WebSocketStream:
         if not self.websocket:
             raise Exception(f'No active WebSocket subscription for {self.event_name}')
         msg = await self.websocket.recv()
-        return json.loads(msg)
+        return json.loads(msg)['message']
 

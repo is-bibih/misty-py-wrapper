@@ -1,4 +1,4 @@
-from .api_wrappers import ApiWrapperMixin
+from api_wrappers import ApiWrapperMixin
 
 class SystemMixin(ApiWrapperMixin):
     def __init__(self, ip):
