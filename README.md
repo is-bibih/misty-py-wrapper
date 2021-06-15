@@ -4,11 +4,23 @@
 
 documentation: https://is-bibih.github.io/misty-py-wrapper/
 
-implemented:
-  * audio: set volume, save/delete audio files, get file list
-  * text-to-speech: send text and play generated speech
-  * REST wrappers: GET, POST and DELETE requests
-  * WebSockets wrappers: create and close connections, subscribe and unsubscribe from events
-  * head: set and get position
-  * arms: set and get position
-  * driving
+## how to update documentation
+
+Set `PYTHONPATH` environment variable to include the `misty-py-wrapper/misty-py-wrapper`
+directory.
+
+From `misty-py-wrapper`, generate documentation in dummy directory `new-docs`:
+```
+pdoc --html -f -o new-docs misty-py-wrapper
+```
+
+(Check generated documentation with internet browser.)
+
+Move documentation to its correct directory and delete dummy folder.
+```
+mv new-docs/* docs
+rm -r new-docs
+```
+
+Commit and push changes.
+
