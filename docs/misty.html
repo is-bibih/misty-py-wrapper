@@ -26,17 +26,16 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from .api_wrappers import ApiWrapperMixin
-from .asset import AssetMixin
-from .system import SystemMixin
-from .movement import Head, BothArms, DrivingMixin
-from .navigation import MappingMixin, TrackingMixin, SlamSettingsMixin
+<pre><code class="python">from api_wrappers import ApiWrapperMixin
+from asset import AssetMixin
+from system import SystemMixin
+from movement import Head, BothArms, DrivingMixin
+from navigation import NavigationMixin
 from typing import List
 from io import BytesIO
 import gtts
 
-class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, SystemMixin,
-            AssetMixin, ApiWrapperMixin):
+class Robot(NavigationMixin, DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMixin):
     &#34;&#34;&#34;Provide an interface to the Misty API and text-to-speech.
 
     &#34;&#34;&#34;
@@ -70,8 +69,117 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
                           for sensor in exclude_sensors]
         self.add_websocket(&#39;TouchSensor&#39;, event_name, conditions=conditions, **kwargs)
 
+    def add_hazard_notification(self, event_name: str,
+                                hazard_type: List[str] = None, **kwargs):
+        &#34;&#34;&#34;Add a WebSocket connection to receive hazard notification event messages.
+
+        Misty sends event messages each time the hazard system detects a change to a
+        hazard state. You can subscribe to these events to be
+        notified when Misty enters or exits a specific hazard state.
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to hazard notification events.
+        hazard_type: list of str, default None
+            List with hazard event types to subscribe to. May be one of the
+            following (check Misty documentation at
+            https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#hazardnotification
+            for details):
+
+            - `bumpSensorsHazardState`
+            - `criticalInternalError`
+            - `driveStopped`
+            - `timeOfFlightSensorsHazardState`
+            - `excessiveSpeedHazard`
+
+            If no hazard event types are passed, the event subscription returns
+            information from all types.
+
+        &#34;&#34;&#34;
+
+        hazards = [&#39;bumpSensorsHazardState&#39;, &#39;criticalInternalError&#39;, &#39;driveStopped&#39;
+                   &#39;timeOfFlightSensorsHazardState&#39;, &#39;excessiveSpeedHazard&#39;]
+        if not hazard_type:
+            conditions = None
+        # if only one type 
+        elif isinstance(hazard_type, str):
+            if hazard_type in hazards:
+                conditions = [(&#39;Hazard&#39;, &#39;==&#39;, hazard_type)]
+            else:
+                raise ValueError(f&#39;Invalid hazard type {hazard_type}&#39;)
+        # if more than one type
+        else:
+            exclude_hazards = hazards.copy()
+            for hazard in hazard_type:
+                if not hazard in hazards:
+                    raise ValueError(f&#39;Invalid hazard type {hazard}&#39;)
+                else:
+                    exclude_hazards.remove(hazard)
+            conditions = [(&#39;Hazard&#39;, &#39;!=&#39;, hazard) \
+                          for hazard in exclude_hazards]
+        self.add_websocket(&#39;HazardNotification&#39;, event_name, conditions=conditions, **kwargs)
+
+    def add_imu(self, event_name, **kwargs):
+        &#34;&#34;&#34;Provide  information from Misty&#39;s IMU sensor.
+
+        This WebSocket stream includes information about:
+
+        - the pitch, yaw, and roll orientation angles of the sensor (in degrees)
+        - the force (in meters per second) currently applied to the sensor along
+          its pitch, yaw, and roll rotational axes
+        - the force (in meters per second squared) currently applied to the
+          sensor along its X, Y, and Z axes
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to the IMU sensor data stream.
+
+        Notes
+        -----
+        Whenever Misty boots up or resets the real-time controller, the IMU
+        defines that position to be a heading of 0 degrees. The IMU is located
+        in Misty&#39;s torso, so the relative position of Misty&#39;s head does not
+        change readings.
+
+        By default, Misty sends IMU events every five seconds. Pass a `debounce`
+        keyword argument with a different value (in ms) to change it.
+
+        &#34;&#34;&#34;
+        self.add_websocket(&#39;IMU&#39;, event_name, **kwargs)
+
+    def add_slam_status(self, event_name, **kwargs):
+        &#34;&#34;&#34;Provide information about the SLAM system&#39;s status.
+
+        It returns a dictionary with `status`, `statusList`, `runMode`, and
+        `sensorStatus`.
+
+        - `status`: an integer which, when converted to binary, represents whether
+          each status code for the SLAM system is on (1) or off (0)
+        - `statusList`: a list of the status codes which are in the &#39;on&#39; state
+        - `runMode`: represents which task the navigation system is currently
+          carrying out (tracking, exploring, etc.)
+        - `sensorStatus`: describes the status of the depth sensor
+
+        See the Misty documentation for details:
+        https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#slamstatus
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to the IMU sensor data stream.
+
+        Notes
+        -----
+        It is recommended to only use returned `SensorStatus` and `RunMode` as
+        supplemental information if coding SLAM functionality, and focus on 
+        `Status` and `StatusList`.
+        &#34;&#34;&#34;
+        self.add_websocket(&#39;SlamStatus&#39;, event_name, **kwargs)
+
     def text_to_speech(self, msg: str, lang: str = &#39;es&#39;,
-                       file_name: str = &#39;temp.mp3&#39;,
+                           file_name: str = &#39;temp.mp3&#39;,
                        delete_after: bool = True, **kwargs):
         &#34;&#34;&#34;Generate speech audio from text and play it in Misty.&#34;&#34;&#34;
         file_obj = BytesIO()
@@ -103,8 +211,7 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, SystemMixin,
-            AssetMixin, ApiWrapperMixin):
+<pre><code class="python">class Robot(NavigationMixin, DrivingMixin, SystemMixin, AssetMixin, ApiWrapperMixin):
     &#34;&#34;&#34;Provide an interface to the Misty API and text-to-speech.
 
     &#34;&#34;&#34;
@@ -138,8 +245,117 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
                           for sensor in exclude_sensors]
         self.add_websocket(&#39;TouchSensor&#39;, event_name, conditions=conditions, **kwargs)
 
+    def add_hazard_notification(self, event_name: str,
+                                hazard_type: List[str] = None, **kwargs):
+        &#34;&#34;&#34;Add a WebSocket connection to receive hazard notification event messages.
+
+        Misty sends event messages each time the hazard system detects a change to a
+        hazard state. You can subscribe to these events to be
+        notified when Misty enters or exits a specific hazard state.
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to hazard notification events.
+        hazard_type: list of str, default None
+            List with hazard event types to subscribe to. May be one of the
+            following (check Misty documentation at
+            https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#hazardnotification
+            for details):
+
+            - `bumpSensorsHazardState`
+            - `criticalInternalError`
+            - `driveStopped`
+            - `timeOfFlightSensorsHazardState`
+            - `excessiveSpeedHazard`
+
+            If no hazard event types are passed, the event subscription returns
+            information from all types.
+
+        &#34;&#34;&#34;
+
+        hazards = [&#39;bumpSensorsHazardState&#39;, &#39;criticalInternalError&#39;, &#39;driveStopped&#39;
+                   &#39;timeOfFlightSensorsHazardState&#39;, &#39;excessiveSpeedHazard&#39;]
+        if not hazard_type:
+            conditions = None
+        # if only one type 
+        elif isinstance(hazard_type, str):
+            if hazard_type in hazards:
+                conditions = [(&#39;Hazard&#39;, &#39;==&#39;, hazard_type)]
+            else:
+                raise ValueError(f&#39;Invalid hazard type {hazard_type}&#39;)
+        # if more than one type
+        else:
+            exclude_hazards = hazards.copy()
+            for hazard in hazard_type:
+                if not hazard in hazards:
+                    raise ValueError(f&#39;Invalid hazard type {hazard}&#39;)
+                else:
+                    exclude_hazards.remove(hazard)
+            conditions = [(&#39;Hazard&#39;, &#39;!=&#39;, hazard) \
+                          for hazard in exclude_hazards]
+        self.add_websocket(&#39;HazardNotification&#39;, event_name, conditions=conditions, **kwargs)
+
+    def add_imu(self, event_name, **kwargs):
+        &#34;&#34;&#34;Provide  information from Misty&#39;s IMU sensor.
+
+        This WebSocket stream includes information about:
+
+        - the pitch, yaw, and roll orientation angles of the sensor (in degrees)
+        - the force (in meters per second) currently applied to the sensor along
+          its pitch, yaw, and roll rotational axes
+        - the force (in meters per second squared) currently applied to the
+          sensor along its X, Y, and Z axes
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to the IMU sensor data stream.
+
+        Notes
+        -----
+        Whenever Misty boots up or resets the real-time controller, the IMU
+        defines that position to be a heading of 0 degrees. The IMU is located
+        in Misty&#39;s torso, so the relative position of Misty&#39;s head does not
+        change readings.
+
+        By default, Misty sends IMU events every five seconds. Pass a `debounce`
+        keyword argument with a different value (in ms) to change it.
+
+        &#34;&#34;&#34;
+        self.add_websocket(&#39;IMU&#39;, event_name, **kwargs)
+
+    def add_slam_status(self, event_name, **kwargs):
+        &#34;&#34;&#34;Provide information about the SLAM system&#39;s status.
+
+        It returns a dictionary with `status`, `statusList`, `runMode`, and
+        `sensorStatus`.
+
+        - `status`: an integer which, when converted to binary, represents whether
+          each status code for the SLAM system is on (1) or off (0)
+        - `statusList`: a list of the status codes which are in the &#39;on&#39; state
+        - `runMode`: represents which task the navigation system is currently
+          carrying out (tracking, exploring, etc.)
+        - `sensorStatus`: describes the status of the depth sensor
+
+        See the Misty documentation for details:
+        https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#slamstatus
+
+        Parameters
+        ----------
+        event_name: str
+            Unique identifier for the subscription to the IMU sensor data stream.
+
+        Notes
+        -----
+        It is recommended to only use returned `SensorStatus` and `RunMode` as
+        supplemental information if coding SLAM functionality, and focus on 
+        `Status` and `StatusList`.
+        &#34;&#34;&#34;
+        self.add_websocket(&#39;SlamStatus&#39;, event_name, **kwargs)
+
     def text_to_speech(self, msg: str, lang: str = &#39;es&#39;,
-                       file_name: str = &#39;temp.mp3&#39;,
+                           file_name: str = &#39;temp.mp3&#39;,
                        delete_after: bool = True, **kwargs):
         &#34;&#34;&#34;Generate speech audio from text and play it in Misty.&#34;&#34;&#34;
         file_obj = BytesIO()
@@ -152,16 +368,222 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.navigation.MappingMixin" href="navigation.html#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></li>
-<li><a title="misty-py-wrapper.navigation.TrackingMixin" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></li>
-<li><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></li>
-<li><a title="misty-py-wrapper.movement.DrivingMixin" href="movement.html#misty-py-wrapper.movement.DrivingMixin">DrivingMixin</a></li>
-<li><a title="misty-py-wrapper.system.SystemMixin" href="system.html#misty-py-wrapper.system.SystemMixin">SystemMixin</a></li>
-<li><a title="misty-py-wrapper.asset.AssetMixin" href="asset.html#misty-py-wrapper.asset.AssetMixin">AssetMixin</a></li>
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>navigation.NavigationMixin</li>
+<li>navigation.MappingMixin</li>
+<li>navigation.TrackingMixin</li>
+<li>navigation.SlamSettingsMixin</li>
+<li>movement.DrivingMixin</li>
+<li>system.SystemMixin</li>
+<li>asset.AssetMixin</li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Methods</h3>
 <dl>
+<dt id="misty-py-wrapper.misty.Robot.add_hazard_notification"><code class="name flex">
+<span>def <span class="ident">add_hazard_notification</span></span>(<span>self, event_name: str, hazard_type: List[str] = None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a WebSocket connection to receive hazard notification event messages.</p>
+<p>Misty sends event messages each time the hazard system detects a change to a
+hazard state. You can subscribe to these events to be
+notified when Misty enters or exits a specific hazard state.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>event_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier for the subscription to hazard notification events.</dd>
+<dt><strong><code>hazard_type</code></strong> :&ensp;<code>list</code> of <code>str</code>, default <code>None</code></dt>
+<dd>
+<p>List with hazard event types to subscribe to. May be one of the
+following (check Misty documentation at
+<a href="https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#hazardnotification">https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#hazardnotification</a>
+for details):</p>
+<ul>
+<li><code>bumpSensorsHazardState</code></li>
+<li><code>criticalInternalError</code></li>
+<li><code>driveStopped</code></li>
+<li><code>timeOfFlightSensorsHazardState</code></li>
+<li><code>excessiveSpeedHazard</code></li>
+</ul>
+<p>If no hazard event types are passed, the event subscription returns
+information from all types.</p>
+</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_hazard_notification(self, event_name: str,
+                            hazard_type: List[str] = None, **kwargs):
+    &#34;&#34;&#34;Add a WebSocket connection to receive hazard notification event messages.
+
+    Misty sends event messages each time the hazard system detects a change to a
+    hazard state. You can subscribe to these events to be
+    notified when Misty enters or exits a specific hazard state.
+
+    Parameters
+    ----------
+    event_name: str
+        Unique identifier for the subscription to hazard notification events.
+    hazard_type: list of str, default None
+        List with hazard event types to subscribe to. May be one of the
+        following (check Misty documentation at
+        https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#hazardnotification
+        for details):
+
+        - `bumpSensorsHazardState`
+        - `criticalInternalError`
+        - `driveStopped`
+        - `timeOfFlightSensorsHazardState`
+        - `excessiveSpeedHazard`
+
+        If no hazard event types are passed, the event subscription returns
+        information from all types.
+
+    &#34;&#34;&#34;
+
+    hazards = [&#39;bumpSensorsHazardState&#39;, &#39;criticalInternalError&#39;, &#39;driveStopped&#39;
+               &#39;timeOfFlightSensorsHazardState&#39;, &#39;excessiveSpeedHazard&#39;]
+    if not hazard_type:
+        conditions = None
+    # if only one type 
+    elif isinstance(hazard_type, str):
+        if hazard_type in hazards:
+            conditions = [(&#39;Hazard&#39;, &#39;==&#39;, hazard_type)]
+        else:
+            raise ValueError(f&#39;Invalid hazard type {hazard_type}&#39;)
+    # if more than one type
+    else:
+        exclude_hazards = hazards.copy()
+        for hazard in hazard_type:
+            if not hazard in hazards:
+                raise ValueError(f&#39;Invalid hazard type {hazard}&#39;)
+            else:
+                exclude_hazards.remove(hazard)
+        conditions = [(&#39;Hazard&#39;, &#39;!=&#39;, hazard) \
+                      for hazard in exclude_hazards]
+    self.add_websocket(&#39;HazardNotification&#39;, event_name, conditions=conditions, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.misty.Robot.add_imu"><code class="name flex">
+<span>def <span class="ident">add_imu</span></span>(<span>self, event_name, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide
+information from Misty's IMU sensor.</p>
+<p>This WebSocket stream includes information about:</p>
+<ul>
+<li>the pitch, yaw, and roll orientation angles of the sensor (in degrees)</li>
+<li>the force (in meters per second) currently applied to the sensor along
+its pitch, yaw, and roll rotational axes</li>
+<li>the force (in meters per second squared) currently applied to the
+sensor along its X, Y, and Z axes</li>
+</ul>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>event_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier for the subscription to the IMU sensor data stream.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Whenever Misty boots up or resets the real-time controller, the IMU
+defines that position to be a heading of 0 degrees. The IMU is located
+in Misty's torso, so the relative position of Misty's head does not
+change readings.</p>
+<p>By default, Misty sends IMU events every five seconds. Pass a <code>debounce</code>
+keyword argument with a different value (in ms) to change it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_imu(self, event_name, **kwargs):
+    &#34;&#34;&#34;Provide  information from Misty&#39;s IMU sensor.
+
+    This WebSocket stream includes information about:
+
+    - the pitch, yaw, and roll orientation angles of the sensor (in degrees)
+    - the force (in meters per second) currently applied to the sensor along
+      its pitch, yaw, and roll rotational axes
+    - the force (in meters per second squared) currently applied to the
+      sensor along its X, Y, and Z axes
+
+    Parameters
+    ----------
+    event_name: str
+        Unique identifier for the subscription to the IMU sensor data stream.
+
+    Notes
+    -----
+    Whenever Misty boots up or resets the real-time controller, the IMU
+    defines that position to be a heading of 0 degrees. The IMU is located
+    in Misty&#39;s torso, so the relative position of Misty&#39;s head does not
+    change readings.
+
+    By default, Misty sends IMU events every five seconds. Pass a `debounce`
+    keyword argument with a different value (in ms) to change it.
+
+    &#34;&#34;&#34;
+    self.add_websocket(&#39;IMU&#39;, event_name, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="misty-py-wrapper.misty.Robot.add_slam_status"><code class="name flex">
+<span>def <span class="ident">add_slam_status</span></span>(<span>self, event_name, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide information about the SLAM system's status.</p>
+<p>It returns a dictionary with <code>status</code>, <code>statusList</code>, <code>runMode</code>, and
+<code>sensorStatus</code>.</p>
+<ul>
+<li><code>status</code>: an integer which, when converted to binary, represents whether
+each status code for the SLAM system is on (1) or off (0)</li>
+<li><code>statusList</code>: a list of the status codes which are in the 'on' state</li>
+<li><code>runMode</code>: represents which task the navigation system is currently
+carrying out (tracking, exploring, etc.)</li>
+<li><code>sensorStatus</code>: describes the status of the depth sensor</li>
+</ul>
+<p>See the Misty documentation for details:
+<a href="https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#slamstatus">https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#slamstatus</a></p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>event_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier for the subscription to the IMU sensor data stream.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>It is recommended to only use returned <code>SensorStatus</code> and <code>RunMode</code> as
+supplemental information if coding SLAM functionality, and focus on
+<code>Status</code> and <code>StatusList</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_slam_status(self, event_name, **kwargs):
+    &#34;&#34;&#34;Provide information about the SLAM system&#39;s status.
+
+    It returns a dictionary with `status`, `statusList`, `runMode`, and
+    `sensorStatus`.
+
+    - `status`: an integer which, when converted to binary, represents whether
+      each status code for the SLAM system is on (1) or off (0)
+    - `statusList`: a list of the status codes which are in the &#39;on&#39; state
+    - `runMode`: represents which task the navigation system is currently
+      carrying out (tracking, exploring, etc.)
+    - `sensorStatus`: describes the status of the depth sensor
+
+    See the Misty documentation for details:
+    https://docs.mistyrobotics.com/misty-ii/robot/sensor-data/#slamstatus
+
+    Parameters
+    ----------
+    event_name: str
+        Unique identifier for the subscription to the IMU sensor data stream.
+
+    Notes
+    -----
+    It is recommended to only use returned `SensorStatus` and `RunMode` as
+    supplemental information if coding SLAM functionality, and focus on 
+    `Status` and `StatusList`.
+    &#34;&#34;&#34;
+    self.add_websocket(&#39;SlamStatus&#39;, event_name, **kwargs)</code></pre>
+</details>
+</dd>
 <dt id="misty-py-wrapper.misty.Robot.add_touch_sensor"><code class="name flex">
 <span>def <span class="ident">add_touch_sensor</span></span>(<span>self, event_name, sensor_position: List[str] = None, **kwargs)</span>
 </code></dt>
@@ -206,7 +628,7 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def text_to_speech(self, msg: str, lang: str = &#39;es&#39;,
-                   file_name: str = &#39;temp.mp3&#39;,
+                       file_name: str = &#39;temp.mp3&#39;,
                    delete_after: bool = True, **kwargs):
     &#34;&#34;&#34;Generate speech audio from text and play it in Misty.&#34;&#34;&#34;
     file_obj = BytesIO()
@@ -219,71 +641,6 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.navigation.MappingMixin" href="navigation.html#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.delete_slam_map" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.delete_slam_map">delete_slam_map</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_current_slam_map" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.get_current_slam_map">get_current_slam_map</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_map" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.get_map">get_map</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_slam_maps" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.get_slam_maps">get_slam_maps</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.rename_slam_map" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.rename_slam_map">rename_slam_map</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.start_mapping" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.start_mapping">start_mapping</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.stop_mapping" href="navigation.html#misty-py-wrapper.navigation.MappingMixin.stop_mapping">stop_mapping</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.MappingMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-<li><code><b><a title="misty-py-wrapper.navigation.TrackingMixin" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.drive_to_location" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin.drive_to_location">drive_to_location</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.follow_path" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin.follow_path">follow_path</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.start_tracking" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin.start_tracking">start_tracking</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.stop_tracking" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin.stop_tracking">stop_tracking</a></code></li>
-</ul>
-</li>
-<li><code><b><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings">get_hazard_settings</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain">get_slam_ir_exposure_and_gain</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics">get_slam_navigation_diagnostics</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain">get_slam_visible_exposure_and_gain</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam">reset_slam</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain">set_slam_ir_exposure_and_gain</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain">set_slam_visible_exposure_and_gain</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming">start_slam_streaming</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming">stop_slam_streaming</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture">take_depth_picture</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture">take_fisheye_picture</a></code></li>
-<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings">update_hazard_settings</a></code></li>
-</ul>
-</li>
-<li><code><b><a title="misty-py-wrapper.movement.DrivingMixin" href="movement.html#misty-py-wrapper.movement.DrivingMixin">DrivingMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.drive" href="movement.html#misty-py-wrapper.movement.DrivingMixin.drive">drive</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.drive_arc" href="movement.html#misty-py-wrapper.movement.DrivingMixin.drive_arc">drive_arc</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.drive_heading" href="movement.html#misty-py-wrapper.movement.DrivingMixin.drive_heading">drive_heading</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.drive_time" href="movement.html#misty-py-wrapper.movement.DrivingMixin.drive_time">drive_time</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.drive_track" href="movement.html#misty-py-wrapper.movement.DrivingMixin.drive_track">drive_track</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.halt" href="movement.html#misty-py-wrapper.movement.DrivingMixin.halt">halt</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.DrivingMixin.stop" href="movement.html#misty-py-wrapper.movement.DrivingMixin.stop">stop</a></code></li>
-</ul>
-</li>
-<li><code><b><a title="misty-py-wrapper.system.SystemMixin" href="system.html#misty-py-wrapper.system.SystemMixin">SystemMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.system.SystemMixin.set_default_volume" href="system.html#misty-py-wrapper.system.SystemMixin.set_default_volume">set_default_volume</a></code></li>
-</ul>
-</li>
-<li><code><b><a title="misty-py-wrapper.asset.AssetMixin" href="asset.html#misty-py-wrapper.asset.AssetMixin">AssetMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.asset.AssetMixin.delete_audio" href="asset.html#misty-py-wrapper.asset.AssetMixin.delete_audio">delete_audio</a></code></li>
-<li><code><a title="misty-py-wrapper.asset.AssetMixin.get_audio_list" href="asset.html#misty-py-wrapper.asset.AssetMixin.get_audio_list">get_audio_list</a></code></li>
-<li><code><a title="misty-py-wrapper.asset.AssetMixin.save_audio" href="asset.html#misty-py-wrapper.asset.AssetMixin.save_audio">save_audio</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 </dl>
 </section>
@@ -304,6 +661,9 @@ class Robot(MappingMixin, TrackingMixin, SlamSettingsMixin, DrivingMixin, System
 <li>
 <h4><code><a title="misty-py-wrapper.misty.Robot" href="#misty-py-wrapper.misty.Robot">Robot</a></code></h4>
 <ul class="">
+<li><code><a title="misty-py-wrapper.misty.Robot.add_hazard_notification" href="#misty-py-wrapper.misty.Robot.add_hazard_notification">add_hazard_notification</a></code></li>
+<li><code><a title="misty-py-wrapper.misty.Robot.add_imu" href="#misty-py-wrapper.misty.Robot.add_imu">add_imu</a></code></li>
+<li><code><a title="misty-py-wrapper.misty.Robot.add_slam_status" href="#misty-py-wrapper.misty.Robot.add_slam_status">add_slam_status</a></code></li>
 <li><code><a title="misty-py-wrapper.misty.Robot.add_touch_sensor" href="#misty-py-wrapper.misty.Robot.add_touch_sensor">add_touch_sensor</a></code></li>
 <li><code><a title="misty-py-wrapper.misty.Robot.text_to_speech" href="#misty-py-wrapper.misty.Robot.text_to_speech">text_to_speech</a></code></li>
 </ul>

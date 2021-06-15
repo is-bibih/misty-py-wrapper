@@ -38,7 +38,7 @@ https://docs.mistyrobotics.com/misty-ii/rest-api/api-reference/#navigation
 &#34;&#34;&#34;
 
 import base64
-from .api_wrappers import ApiWrapperMixin
+from api_wrappers import ApiWrapperMixin
 
 class MappingMixin(ApiWrapperMixin):
     &#34;&#34;&#34;Provide an interface for Misty&#39;s mapping functions.
@@ -503,7 +503,12 @@ class SlamSettingsMixin(ApiWrapperMixin):
         &#34;&#34;&#34;
         endpoint = &#39;cameras/fisheye?Base64=true&#39;
         data = self.wrapper_get(endpoint)
-        return base64.b64decode(data[&#39;base64&#39;])</code></pre>
+        return base64.b64decode(data[&#39;base64&#39;])
+
+class NavigationMixin(MappingMixin, TrackingMixin, SlamSettingsMixin):
+    &#34;&#34;&#34;Provide an interface to Misty&#39;s navigation capabilities.&#34;&#34;&#34;
+    def __init__(self, ip):
+        super().__init__(ip)</code></pre>
 </details>
 </section>
 <section>
@@ -596,11 +601,11 @@ class SlamSettingsMixin(ApiWrapperMixin):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+<li><a title="misty-py-wrapper.navigation.NavigationMixin" href="#misty-py-wrapper.navigation.NavigationMixin">NavigationMixin</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -755,14 +760,64 @@ new name for the map corresponding to key</p></div>
 </details>
 </dd>
 </dl>
+</dd>
+<dt id="misty-py-wrapper.navigation.NavigationMixin"><code class="flex name class">
+<span>class <span class="ident">NavigationMixin</span></span>
+<span>(</span><span>ip)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide an interface to Misty's navigation capabilities.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NavigationMixin(MappingMixin, TrackingMixin, SlamSettingsMixin):
+    &#34;&#34;&#34;Provide an interface to Misty&#39;s navigation capabilities.&#34;&#34;&#34;
+    def __init__(self, ip):
+        super().__init__(ip)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="misty-py-wrapper.navigation.MappingMixin" href="#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></li>
+<li><a title="misty-py-wrapper.navigation.TrackingMixin" href="#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></li>
+<li><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
+</ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
+<li><code><b><a title="misty-py-wrapper.navigation.MappingMixin" href="#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></b></code>:
 <ul class="hlist">
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.delete_slam_map" href="#misty-py-wrapper.navigation.MappingMixin.delete_slam_map">delete_slam_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_current_slam_map" href="#misty-py-wrapper.navigation.MappingMixin.get_current_slam_map">get_current_slam_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_map" href="#misty-py-wrapper.navigation.MappingMixin.get_map">get_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.get_slam_maps" href="#misty-py-wrapper.navigation.MappingMixin.get_slam_maps">get_slam_maps</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.rename_slam_map" href="#misty-py-wrapper.navigation.MappingMixin.rename_slam_map">rename_slam_map</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.start_mapping" href="#misty-py-wrapper.navigation.MappingMixin.start_mapping">start_mapping</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.MappingMixin.stop_mapping" href="#misty-py-wrapper.navigation.MappingMixin.stop_mapping">stop_mapping</a></code></li>
+</ul>
+</li>
+<li><code><b><a title="misty-py-wrapper.navigation.TrackingMixin" href="#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.drive_to_location" href="#misty-py-wrapper.navigation.TrackingMixin.drive_to_location">drive_to_location</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.follow_path" href="#misty-py-wrapper.navigation.TrackingMixin.follow_path">follow_path</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.start_tracking" href="#misty-py-wrapper.navigation.TrackingMixin.start_tracking">start_tracking</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.TrackingMixin.stop_tracking" href="#misty-py-wrapper.navigation.TrackingMixin.stop_tracking">stop_tracking</a></code></li>
+</ul>
+</li>
+<li><code><b><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_hazard_settings">get_hazard_settings</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_ir_exposure_and_gain">get_slam_ir_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_navigation_diagnostics">get_slam_navigation_diagnostics</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.get_slam_visible_exposure_and_gain">get_slam_visible_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam" href="#misty-py-wrapper.navigation.SlamSettingsMixin.reset_slam">reset_slam</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_ir_exposure_and_gain">set_slam_ir_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain" href="#misty-py-wrapper.navigation.SlamSettingsMixin.set_slam_visible_exposure_and_gain">set_slam_visible_exposure_and_gain</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming" href="#misty-py-wrapper.navigation.SlamSettingsMixin.start_slam_streaming">start_slam_streaming</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming" href="#misty-py-wrapper.navigation.SlamSettingsMixin.stop_slam_streaming">stop_slam_streaming</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture" href="#misty-py-wrapper.navigation.SlamSettingsMixin.take_depth_picture">take_depth_picture</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture" href="#misty-py-wrapper.navigation.SlamSettingsMixin.take_fisheye_picture">take_fisheye_picture</a></code></li>
+<li><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings" href="#misty-py-wrapper.navigation.SlamSettingsMixin.update_hazard_settings">update_hazard_settings</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1078,11 +1133,11 @@ new name for the map corresponding to key</p></div>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+<li><a title="misty-py-wrapper.navigation.NavigationMixin" href="#misty-py-wrapper.navigation.NavigationMixin">NavigationMixin</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1667,17 +1722,6 @@ boots up. This means changes applied with this function do not save across reboo
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="misty-py-wrapper.navigation.TrackingMixin"><code class="flex name class">
 <span>class <span class="ident">TrackingMixin</span></span>
@@ -1787,11 +1831,11 @@ boots up. This means changes applied with this function do not save across reboo
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+<li><a title="misty-py-wrapper.navigation.NavigationMixin" href="#misty-py-wrapper.navigation.NavigationMixin">NavigationMixin</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1965,17 +2009,6 @@ lower than the threshold.</dd>
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 </dl>
 </section>
@@ -2004,6 +2037,9 @@ lower than the threshold.</dd>
 <li><code><a title="misty-py-wrapper.navigation.MappingMixin.start_mapping" href="#misty-py-wrapper.navigation.MappingMixin.start_mapping">start_mapping</a></code></li>
 <li><code><a title="misty-py-wrapper.navigation.MappingMixin.stop_mapping" href="#misty-py-wrapper.navigation.MappingMixin.stop_mapping">stop_mapping</a></code></li>
 </ul>
+</li>
+<li>
+<h4><code><a title="misty-py-wrapper.navigation.NavigationMixin" href="#misty-py-wrapper.navigation.NavigationMixin">NavigationMixin</a></code></h4>
 </li>
 <li>
 <h4><code><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></code></h4>

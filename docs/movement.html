@@ -46,7 +46,7 @@ or have as attributes the `ActuatorMixin` and `Arm` objects.
 The `DrivingMixin`, which the `Robot` class inherits from, provides driving functions.
 &#34;&#34;&#34;
 
-from .api_wrappers import ApiWrapperMixin
+from api_wrappers import ApiWrapperMixin
 from math import radians
 
 class ActuatorMixin(ApiWrapperMixin):
@@ -544,7 +544,7 @@ class DrivingMixin(ApiWrapperMixin):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -572,17 +572,6 @@ class DrivingMixin(ApiWrapperMixin):
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="misty-py-wrapper.movement.Arm"><code class="flex name class">
 <span>class <span class="ident">Arm</span></span>
@@ -673,7 +662,7 @@ class DrivingMixin(ApiWrapperMixin):
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="misty-py-wrapper.movement.ActuatorMixin" href="#misty-py-wrapper.movement.ActuatorMixin">ActuatorMixin</a></li>
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -782,17 +771,6 @@ def position(self):
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.movement.ActuatorMixin" href="#misty-py-wrapper.movement.ActuatorMixin">ActuatorMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="misty-py-wrapper.movement.BothArms"><code class="flex name class">
 <span>class <span class="ident">BothArms</span></span>
@@ -899,7 +877,7 @@ def position(self):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
@@ -1026,17 +1004,6 @@ def position(self):
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="misty-py-wrapper.movement.DrivingMixin"><code class="flex name class">
 <span>class <span class="ident">DrivingMixin</span></span>
@@ -1202,11 +1169,7 @@ def position(self):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1479,17 +1442,6 @@ def position(self):
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="misty-py-wrapper.movement.Head"><code class="flex name class">
 <span>class <span class="ident">Head</span></span>
@@ -1634,7 +1586,7 @@ def position(self):
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="misty-py-wrapper.movement.ActuatorMixin" href="#misty-py-wrapper.movement.ActuatorMixin">ActuatorMixin</a></li>
-<li><a title="misty-py-wrapper.api_wrappers.ApiWrapperMixin" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin">ApiWrapperMixin</a></li>
+<li>api_wrappers.ApiWrapperMixin</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -1853,17 +1805,6 @@ def yaw(self):
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="misty-py-wrapper.movement.ActuatorMixin" href="#misty-py-wrapper.movement.ActuatorMixin">ActuatorMixin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.add_websocket" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket">add_websocket</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.wrapper_delete" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_delete">wrapper_delete</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.wrapper_get" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_get">wrapper_get</a></code></li>
-<li><code><a title="misty-py-wrapper.movement.ActuatorMixin.wrapper_post" href="api_wrappers.html#misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post">wrapper_post</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 </dl>
 </section>

@@ -9,8 +9,9 @@ code more maintainable). The following modules have been implemented:
 
 * Asset (in progress)
 * Movement
-* Navigation (in progress)
+* Navigation
 * System (in progress)
+* Skill management
 
 These are still pending:
 
@@ -19,7 +20,6 @@ These are still pending:
 * Expression
 * External requests
 * Perception
-* Skill management
 
 Additionally, the module provides wrappers for GET, POST and DELETE
 requests to Misty.

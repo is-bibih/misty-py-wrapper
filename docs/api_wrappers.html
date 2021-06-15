@@ -57,22 +57,22 @@ class ApiWrapperMixin:
             Parameters
             ----------
             event_type: str
-                        Misty event type (see API documentation)  
+                        Misty event type (see API documentation)
             event_name: str
-                        Unique identifier for connection  
+                        Unique identifier for connection
             debounce: int
-                      How frequently (in ms) new event data should be sent  
+                      How frequently (in ms) new event data should be sent
             return_property: str, default None
-                             Property to restrict received events to (supports dot notation; e. g. &#34;MentalState.Affect.Valence&#34;); no restrictions if None  
+                             Property to restrict received events to (supports dot notation; e. g. &#34;MentalState.Affect.Valence&#34;); no restrictions if None
             conditions: iterable of tuples, default None
-                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None  
+                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None
 
-                        Property: str  
-                            Event property to check (see API documentation)  
-                        Inequality: str  
-                            Comparison operator; can be &#39;=&gt;&#39;, &#39;==&#39;, &#39;!=&#39;,&#39;&gt;&#39;, &#39;&lt;&#39;, &#39;exists&#39;, &#39;empty&#39;, or &#39;delta&#39;  
-                        Value: str  
-                            Value to check against  
+                        Property: str
+                            Event prperty to check (see API documentation)
+                        Inequality: str
+                            Comparison operator; can be &#39;=&gt;&#39;, &#39;==&#39;, &#39;!=&#39;,&#39;&gt;&#39;, &#39;&lt;&#39;, &#39;exists&#39;, &#39;empty&#39;, or &#39;delta&#39;
+                        Value: str
+                            Value to check against
         &#34;&#34;&#34;
         ws = WebSocketStream(
             self.api_uri,
@@ -92,10 +92,19 @@ class ApiWrapperMixin:
         else:
             raise Exception(resp[&#39;error&#39;])
 
-    def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
+    def wrapper_post(self,
+                     endpoint,
+                     params=None,
+                     timeout_ms=10000,
+                     headers=None,
+                     files=None):
         &#34;&#34;&#34;Do POST requests for the given endpoint.&#34;&#34;&#34;
         url = self.api_url + endpoint
-        resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
+        resp = requests.post(url,
+                             json=params,
+                             timeout=timeout_ms,
+                             headers=headers,
+                             files=files).json()
         if resp[&#39;status&#39;] == &#39;Failed&#39;:
             raise Exception(resp[&#39;error&#39;])
 
@@ -143,6 +152,7 @@ class WebSocketStream:
     def async_wrapper(func):
         def async_func(*args, **kwargs):
             return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+            #return asyncio.run(func(*args, **kwargs))
         return async_func
 
     @async_wrapper
@@ -180,7 +190,7 @@ class WebSocketStream:
         if not self.websocket:
             raise Exception(f&#39;No active WebSocket subscription for {self.event_name}&#39;)
         msg = await self.websocket.recv()
-        return json.loads(msg)</code></pre>
+        return json.loads(msg)[&#39;message&#39;]</code></pre>
 </details>
 </section>
 <section>
@@ -221,22 +231,22 @@ class WebSocketStream:
             Parameters
             ----------
             event_type: str
-                        Misty event type (see API documentation)  
+                        Misty event type (see API documentation)
             event_name: str
-                        Unique identifier for connection  
+                        Unique identifier for connection
             debounce: int
-                      How frequently (in ms) new event data should be sent  
+                      How frequently (in ms) new event data should be sent
             return_property: str, default None
-                             Property to restrict received events to (supports dot notation; e. g. &#34;MentalState.Affect.Valence&#34;); no restrictions if None  
+                             Property to restrict received events to (supports dot notation; e. g. &#34;MentalState.Affect.Valence&#34;); no restrictions if None
             conditions: iterable of tuples, default None
-                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None  
+                        Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None
 
-                        Property: str  
-                            Event property to check (see API documentation)  
-                        Inequality: str  
-                            Comparison operator; can be &#39;=&gt;&#39;, &#39;==&#39;, &#39;!=&#39;,&#39;&gt;&#39;, &#39;&lt;&#39;, &#39;exists&#39;, &#39;empty&#39;, or &#39;delta&#39;  
-                        Value: str  
-                            Value to check against  
+                        Property: str
+                            Event prperty to check (see API documentation)
+                        Inequality: str
+                            Comparison operator; can be &#39;=&gt;&#39;, &#39;==&#39;, &#39;!=&#39;,&#39;&gt;&#39;, &#39;&lt;&#39;, &#39;exists&#39;, &#39;empty&#39;, or &#39;delta&#39;
+                        Value: str
+                            Value to check against
         &#34;&#34;&#34;
         ws = WebSocketStream(
             self.api_uri,
@@ -256,10 +266,19 @@ class WebSocketStream:
         else:
             raise Exception(resp[&#39;error&#39;])
 
-    def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
+    def wrapper_post(self,
+                     endpoint,
+                     params=None,
+                     timeout_ms=10000,
+                     headers=None,
+                     files=None):
         &#34;&#34;&#34;Do POST requests for the given endpoint.&#34;&#34;&#34;
         url = self.api_url + endpoint
-        resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
+        resp = requests.post(url,
+                             json=params,
+                             timeout=timeout_ms,
+                             headers=headers,
+                             files=files).json()
         if resp[&#39;status&#39;] == &#39;Failed&#39;:
             raise Exception(resp[&#39;error&#39;])
 
@@ -270,18 +289,6 @@ class WebSocketStream:
         if resp[&#39;status&#39;] == &#39;Failed&#39;:
             raise Exception(resp)</code></pre>
 </details>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="misty-py-wrapper.asset.AssetMixin" href="asset.html#misty-py-wrapper.asset.AssetMixin">AssetMixin</a></li>
-<li><a title="misty-py-wrapper.misty.Robot" href="misty.html#misty-py-wrapper.misty.Robot">Robot</a></li>
-<li><a title="misty-py-wrapper.movement.ActuatorMixin" href="movement.html#misty-py-wrapper.movement.ActuatorMixin">ActuatorMixin</a></li>
-<li><a title="misty-py-wrapper.movement.BothArms" href="movement.html#misty-py-wrapper.movement.BothArms">BothArms</a></li>
-<li><a title="misty-py-wrapper.movement.DrivingMixin" href="movement.html#misty-py-wrapper.movement.DrivingMixin">DrivingMixin</a></li>
-<li><a title="misty-py-wrapper.navigation.MappingMixin" href="navigation.html#misty-py-wrapper.navigation.MappingMixin">MappingMixin</a></li>
-<li><a title="misty-py-wrapper.navigation.SlamSettingsMixin" href="navigation.html#misty-py-wrapper.navigation.SlamSettingsMixin">SlamSettingsMixin</a></li>
-<li><a title="misty-py-wrapper.navigation.TrackingMixin" href="navigation.html#misty-py-wrapper.navigation.TrackingMixin">TrackingMixin</a></li>
-<li><a title="misty-py-wrapper.system.SystemMixin" href="system.html#misty-py-wrapper.system.SystemMixin">SystemMixin</a></li>
-</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="misty-py-wrapper.api_wrappers.ApiWrapperMixin.add_websocket"><code class="name flex">
@@ -300,12 +307,11 @@ class WebSocketStream:
 <dt><strong><code>return_property</code></strong> :&ensp;<code>str</code>, default <code>None</code></dt>
 <dd>Property to restrict received events to (supports dot notation; e. g. "MentalState.Affect.Valence"); no restrictions if None</dd>
 <dt><strong><code>conditions</code></strong> :&ensp;<code>iterable</code> of <code>tuples</code>, default <code>None</code></dt>
-<dd>Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None
-<pre><code>    Property: str  
-        Event property to check (see API documentation)  
-    Inequality: str  
-        Comparison operator; can be '=&gt;', '==', '!=','&gt;', '&lt;', 'exists', 'empty', or 'delta'  
-    Value: str  
+<dd>Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None<pre><code>    Property: str
+        Event prperty to check (see API documentation)
+    Inequality: str
+        Comparison operator; can be '=&gt;', '==', '!=','&gt;', '&lt;', 'exists', 'empty', or 'delta'
+    Value: str
         Value to check against
 </code></pre>
 </dd>
@@ -326,22 +332,22 @@ class WebSocketStream:
         Parameters
         ----------
         event_type: str
-                    Misty event type (see API documentation)  
+                    Misty event type (see API documentation)
         event_name: str
-                    Unique identifier for connection  
+                    Unique identifier for connection
         debounce: int
-                  How frequently (in ms) new event data should be sent  
+                  How frequently (in ms) new event data should be sent
         return_property: str, default None
-                         Property to restrict received events to (supports dot notation; e. g. &#34;MentalState.Affect.Valence&#34;); no restrictions if None  
+                         Property to restrict received events to (supports dot notation; e. g. &#34;MentalState.Affect.Valence&#34;); no restrictions if None
         conditions: iterable of tuples, default None
-                    Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None  
+                    Filters to limit the kinds of events received, in (Property, Inequality, Value) format; no restrictions if None
 
-                    Property: str  
-                        Event property to check (see API documentation)  
-                    Inequality: str  
-                        Comparison operator; can be &#39;=&gt;&#39;, &#39;==&#39;, &#39;!=&#39;,&#39;&gt;&#39;, &#39;&lt;&#39;, &#39;exists&#39;, &#39;empty&#39;, or &#39;delta&#39;  
-                    Value: str  
-                        Value to check against  
+                    Property: str
+                        Event prperty to check (see API documentation)
+                    Inequality: str
+                        Comparison operator; can be &#39;=&gt;&#39;, &#39;==&#39;, &#39;!=&#39;,&#39;&gt;&#39;, &#39;&lt;&#39;, &#39;exists&#39;, &#39;empty&#39;, or &#39;delta&#39;
+                    Value: str
+                        Value to check against
     &#34;&#34;&#34;
     ws = WebSocketStream(
         self.api_uri,
@@ -390,7 +396,7 @@ class WebSocketStream:
 </details>
 </dd>
 <dt id="misty-py-wrapper.api_wrappers.ApiWrapperMixin.wrapper_post"><code class="name flex">
-<span>def <span class="ident">wrapper_post</span></span>(<span>self, endpoint, params=None, timeout_ms=10000, headers=None)</span>
+<span>def <span class="ident">wrapper_post</span></span>(<span>self, endpoint, params=None, timeout_ms=10000, headers=None, files=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Do POST requests for the given endpoint.</p></div>
@@ -398,10 +404,19 @@ class WebSocketStream:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def wrapper_post(self, endpoint, params=None, timeout_ms=10000, headers=None):
+<pre><code class="python">def wrapper_post(self,
+                 endpoint,
+                 params=None,
+                 timeout_ms=10000,
+                 headers=None,
+                 files=None):
     &#34;&#34;&#34;Do POST requests for the given endpoint.&#34;&#34;&#34;
     url = self.api_url + endpoint
-    resp = requests.post(url, json=params, timeout=timeout_ms, headers=headers).json()
+    resp = requests.post(url,
+                         json=params,
+                         timeout=timeout_ms,
+                         headers=headers,
+                         files=files).json()
     if resp[&#39;status&#39;] == &#39;Failed&#39;:
         raise Exception(resp[&#39;error&#39;])</code></pre>
 </details>
@@ -455,6 +470,7 @@ class WebSocketStream:
     def async_wrapper(func):
         def async_func(*args, **kwargs):
             return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+            #return asyncio.run(func(*args, **kwargs))
         return async_func
 
     @async_wrapper
@@ -492,7 +508,7 @@ class WebSocketStream:
         if not self.websocket:
             raise Exception(f&#39;No active WebSocket subscription for {self.event_name}&#39;)
         msg = await self.websocket.recv()
-        return json.loads(msg)</code></pre>
+        return json.loads(msg)[&#39;message&#39;]</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
@@ -508,6 +524,7 @@ class WebSocketStream:
 <pre><code class="python">def async_wrapper(func):
     def async_func(*args, **kwargs):
         return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+        #return asyncio.run(func(*args, **kwargs))
     return async_func</code></pre>
 </details>
 </dd>
@@ -538,7 +555,8 @@ class WebSocketStream:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def async_func(*args, **kwargs):
-    return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))</code></pre>
+    return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+    #return asyncio.run(func(*args, **kwargs))</code></pre>
 </details>
 </dd>
 <dt id="misty-py-wrapper.api_wrappers.WebSocketStream.subscribe"><code class="name flex">
@@ -551,7 +569,8 @@ class WebSocketStream:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def async_func(*args, **kwargs):
-    return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))</code></pre>
+    return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+    #return asyncio.run(func(*args, **kwargs))</code></pre>
 </details>
 </dd>
 <dt id="misty-py-wrapper.api_wrappers.WebSocketStream.unsubscribe"><code class="name flex">
@@ -564,7 +583,8 @@ class WebSocketStream:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def async_func(*args, **kwargs):
-    return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))</code></pre>
+    return asyncio.get_event_loop().run_until_complete(func(*args, **kwargs))
+    #return asyncio.run(func(*args, **kwargs))</code></pre>
 </details>
 </dd>
 </dl>
