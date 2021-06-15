@@ -6,6 +6,8 @@ documentation: https://is-bibih.github.io/misty-py-wrapper/
 
 ## how to update documentation
 
+If not yet installed, download `pdoc3` with pip: https://pdoc3.github.io/pdoc/
+
 Set `PYTHONPATH` environment variable to include the `misty-py-wrapper/misty-py-wrapper`
 directory.
 
@@ -18,7 +20,7 @@ pdoc --html -f -o new-docs misty-py-wrapper
 
 Move documentation to its correct directory and delete dummy folder.
 ```
-mv new-docs/* docs
+mv new-docs/misty-py-wrapper/* docs
 rm -r new-docs
 ```
 
